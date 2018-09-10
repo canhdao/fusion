@@ -150,7 +150,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PFB_CRATE: {fileID: 1556877940519060, guid: 3e7d9cf225a7f4c42ba6d4ae06234284, type: 2}
-  PFB_COW: {fileID: 1469033404156514, guid: c6741ea1b119f324cbd6a0c643df4b07, type: 2}
+  PFB_COWS:
+  - {fileID: 1469033404156514, guid: c6741ea1b119f324cbd6a0c643df4b07, type: 2}
+  - {fileID: 1469033404156514, guid: 4d8f691ab1571214d9e142c2707a098f, type: 2}
+  - {fileID: 1469033404156514, guid: 9f8ca904c87007b47b67dfacb7ddfd5b, type: 2}
+  - {fileID: 1469033404156514, guid: 7acc1ecd2aa701b46bc388215d120c01, type: 2}
+  - {fileID: 1469033404156514, guid: f39a5397355303c469213566241fe257, type: 2}
+  - {fileID: 1469033404156514, guid: ee792174b92875a419c911db8e81cc4d, type: 2}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

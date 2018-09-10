@@ -9,7 +9,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public static float SCREEN_HEIGHT;
 	
 	public GameObject PFB_CRATE;
-	public GameObject PFB_COW;
+	public GameObject[] PFB_COWS;
 	
 	private float crateSpawnTime = 0;
 	
@@ -58,7 +58,9 @@ public class SCR_Gameplay : MonoBehaviour {
 				if (bestHit.transform != null) {
 					SCR_Cow scrCow = bestHit.transform.GetComponent<SCR_Cow>();
 					if (scrCow != null) {
-						FuseCow(selectedCow.gameObject, scrCow.gameObject);
+						if (selectedCow.GetComponent<SCR_Cow>().type == scrCow.type && scrCow.type != SCR_Cow.LAST_TYPE) {
+							FuseCow(selectedCow.gameObject, scrCow.gameObject);
+						}
 					}
 				}
 				
@@ -103,9 +105,10 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public void FuseCow(GameObject cow1, GameObject cow2) {
 		Vector3 position = (cow1.transform.position + cow2.transform.position) * 0.5f;
-		GameObject cow = Instantiate(PFB_COW, position, PFB_COW.transform.rotation);
-		cow.transform.localScale = new Vector3(cow1.transform.localScale.x + cow2.transform.localScale.x,
-			cow1.transform.localScale.y + cow2.transform.localScale.y, 1);
+		int cowIndex = (int)cow1.GetComponent<SCR_Cow>().type + 1;
+		
+		Instantiate(PFB_COWS[cowIndex], position, PFB_COWS[cowIndex].transform.rotation);
+		
 		Destroy(cow1);
 		Destroy(cow2);
 	}
