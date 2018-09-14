@@ -29,9 +29,11 @@ public class SCR_Gameplay : MonoBehaviour {
 			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D bestHit = FindBestHit(pos);
 			if (bestHit.transform != null) {
-				SCR_Crate scrCrate = bestHit.transform.GetComponent<SCR_Crate>();
-				if (scrCrate != null) {
-					scrCrate.Open();
+				if (bestHit.transform.parent != null) {
+					SCR_Crate scrCrate = bestHit.transform.parent.GetComponent<SCR_Crate>();
+					if (scrCrate != null) {
+						scrCrate.Open();
+					}
 				}
 				
 				SCR_Cow scrCow = bestHit.transform.GetComponent<SCR_Cow>();
@@ -78,7 +80,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public void SpawnCrate() {
 		float x = Random.Range(-SCREEN_WIDTH * 0.5f, SCREEN_WIDTH * 0.5f);
-		float y = Random.Range(-SCREEN_HEIGHT * 0.5f, SCREEN_HEIGHT * 0.5f);
+		float y = Random.Range(-SCREEN_HEIGHT * 0.5f, SCREEN_HEIGHT * 0.5f) + SCREEN_HEIGHT;
 		
 		Vector3 position = new Vector3(x, y, PFB_CRATE.transform.position.z);
 		Instantiate(PFB_CRATE, position, PFB_CRATE.transform.rotation);
