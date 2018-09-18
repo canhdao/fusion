@@ -20,9 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4126523866053764}
   - component: {fileID: 212334422703185916}
-  - component: {fileID: 61766669425585918}
   - component: {fileID: 114613819192514392}
   - component: {fileID: 95762554583831132}
+  - component: {fileID: 61088846049207096}
   m_Layer: 0
   m_Name: PFB_Cow4
   m_TagString: Untagged
@@ -38,12 +38,12 @@ Transform:
   m_GameObject: {fileID: 1469033404156514}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61766669425585918
+--- !u!61 &61088846049207096
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -55,18 +55,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 1.1}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.28, y: 0.5}
+    oldSize: {x: 1.4, y: 2.2}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3, y: 0.55}
+  m_Size: {x: 1.4, y: 2.2}
   m_EdgeRadius: 0
 --- !u!95 &95762554583831132
 Animator:
