@@ -15,25 +15,21 @@ public enum CowType {
 	COW_10
 }
 
+public enum CowState {
+	AUTO_MOVE,
+	USER_MOVE
+}
+
 public class SCR_Cow : MonoBehaviour {
 	public const CowType LAST_TYPE = CowType.COW_6;
 	
-	public const float BIG_SCALE = 1.25f;
-	public const float SMALL_SCALE = 0.8f;
+	public const float MOVE_RANGE = 1.0f;
 	
-	public const float SCALE_BIG_DURATION = 1.0f;
-	public const float SCALE_SMALL_DURATION = 0.25f;
-	
-	public CowType type;
-	
-	private float startScaleX;
-	private float startScaleY;
+	public CowType type = CowType.COW_1;
+	public CowState state = CowState.AUTO_MOVE;
 	
 	// Use this for initialization
 	void Start() {
-		startScaleX = transform.localScale.x;
-		startScaleY = transform.localScale.y;
-		StartPhase1();
 	}
 	
 	// Update is called once per frame
@@ -41,27 +37,19 @@ public class SCR_Cow : MonoBehaviour {
 		
 	}
 	
-	public void UpdateScale(float scale) {
-		transform.localScale = new Vector3(startScaleX * scale, startScaleY * scale, 1);
+	public void Move() {
+		if (state == CowState.AUTO_MOVE) {
+			float x = transform.position.x + Random.Range(-MOVE_RANGE, MOVE_RANGE);
+			float y = transform.position.y + Random.Range(-MOVE_RANGE, MOVE_RANGE);
+			
+			x = Mathf.Clamp(x, -SCR_Gameplay.SCREEN_WIDTH * 0.5f, SCR_Gameplay.SCREEN_WIDTH * 0.5f);
+			y = Mathf.Clamp(y, -SCR_Gameplay.SCREEN_HEIGHT * 0.5f, SCR_Gameplay.SCREEN_HEIGHT * 0.5f);
+			
+			iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "time", 0.5f, "easetype", "easeInOutSine"));
+		}
 	}
 	
-	public void StartPhase1() {
-		iTween.ValueTo(gameObject, iTween.Hash("from", 1.0f, "to", BIG_SCALE, "time", SCALE_BIG_DURATION, "onupdate", "UpdateScale", "oncomplete", "CompletePhase1"));
-	}
-	
-	public void CompletePhase1() {
-		iTween.ValueTo(gameObject, iTween.Hash("from", BIG_SCALE, "to", 1.0f, "time", SCALE_BIG_DURATION, "onupdate", "UpdateScale", "oncomplete", "CompletePhase2"));
-	}
-	
-	public void CompletePhase2() {
-		iTween.ValueTo(gameObject, iTween.Hash("from", 1.0f, "to", SMALL_SCALE, "time", SCALE_SMALL_DURATION, "onupdate", "UpdateScale", "oncomplete", "CompletePhase3"));
-	}
-	
-	public void CompletePhase3() {
-		iTween.ValueTo(gameObject, iTween.Hash("from", SMALL_SCALE, "to", 1.0f, "time", SCALE_SMALL_DURATION, "onupdate", "UpdateScale", "oncomplete", "CompletePhase4"));
-	}
-	
-	public void CompletePhase4() {
-		StartPhase1();
+	public void StopMoving() {
+		iTween.Stop(gameObject);
 	}
 }

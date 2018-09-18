@@ -42,6 +42,9 @@ public class SCR_Gameplay : MonoBehaviour {
 					offsetX = selectedCow.position.x - pos.x;
 					offsetY = selectedCow.position.y - pos.y;
 					selectedCow.GetComponent<Collider2D>().enabled = false;
+					
+					scrCow.StopMoving();
+					scrCow.state = CowState.USER_MOVE;
 				}
 			}
 		}
@@ -65,6 +68,8 @@ public class SCR_Gameplay : MonoBehaviour {
 						}
 					}
 				}
+				
+				selectedCow.GetComponent<SCR_Cow>().state = CowState.AUTO_MOVE;
 				
 				selectedCow.GetComponent<Collider2D>().enabled = true;
 				selectedCow = null;

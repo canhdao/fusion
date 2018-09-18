@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: 212334422703185916}
   - component: {fileID: 61766669425585918}
   - component: {fileID: 114613819192514392}
+  - component: {fileID: 95259654966575822}
   m_Layer: 0
   m_Name: PFB_Cow6
   m_TagString: Untagged
@@ -67,6 +68,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.3, y: 0.55}
   m_EdgeRadius: 0
+--- !u!95 &95259654966575822
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1469033404156514}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a4d6818c531f2b141ad0def1263d1e35, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &114613819192514392
 MonoBehaviour:
   m_ObjectHideFlags: 1
