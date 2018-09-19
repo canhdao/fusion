@@ -42,8 +42,8 @@ public class SCR_Cow : MonoBehaviour {
 			float x = transform.position.x + Random.Range(-MOVE_RANGE, MOVE_RANGE);
 			float y = transform.position.y + Random.Range(-MOVE_RANGE, MOVE_RANGE);
 			
-			x = Mathf.Clamp(x, -SCR_Gameplay.SCREEN_WIDTH * 0.5f, SCR_Gameplay.SCREEN_WIDTH * 0.5f);
-			y = Mathf.Clamp(y, -SCR_Gameplay.SCREEN_HEIGHT * 0.5f, SCR_Gameplay.SCREEN_HEIGHT * 0.5f);
+			x = Mathf.Clamp(x, SCR_Gameplay.GARDEN_LEFT, SCR_Gameplay.GARDEN_RIGHT);
+			y = Mathf.Clamp(y, SCR_Gameplay.GARDEN_BOTTOM, SCR_Gameplay.GARDEN_TOP);
 			
 			iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "time", 0.5f, "easetype", "easeInOutSine"));
 		}

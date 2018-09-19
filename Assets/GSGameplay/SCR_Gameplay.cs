@@ -7,9 +7,22 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public static float SCREEN_WIDTH;
 	public static float SCREEN_HEIGHT;
+
+	public static float GARDEN_X;
+	public static float GARDEN_Y;
+
+	public static float GARDEN_WIDTH;
+	public static float GARDEN_HEIGHT;
+
+	public static float GARDEN_LEFT;
+	public static float GARDEN_RIGHT;
+	public static float GARDEN_TOP;
+	public static float GARDEN_BOTTOM;
 	
 	public GameObject PFB_CRATE;
 	public GameObject[] PFB_COWS;
+
+	public GameObject garden;
 	
 	private float crateSpawnTime = 0;
 	
@@ -21,6 +34,17 @@ public class SCR_Gameplay : MonoBehaviour {
 	void Start() {
 		SCREEN_HEIGHT = Camera.main.orthographicSize * 2;
 		SCREEN_WIDTH = SCREEN_HEIGHT * Screen.width / Screen.height;
+
+		GARDEN_X = garden.transform.position.x;
+		GARDEN_Y = garden.transform.position.y;
+
+		GARDEN_WIDTH = garden.transform.localScale.x;
+		GARDEN_HEIGHT = garden.transform.localScale.y;
+
+		GARDEN_LEFT = GARDEN_X - GARDEN_WIDTH * 0.5f;
+		GARDEN_RIGHT = GARDEN_X + GARDEN_WIDTH * 0.5f;
+		GARDEN_TOP = GARDEN_Y + GARDEN_HEIGHT * 0.5f;
+		GARDEN_BOTTOM = GARDEN_Y - GARDEN_HEIGHT * 0.5f;
 	}
 	
 	// Update is called once per frame
@@ -84,8 +108,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 	
 	public void SpawnCrate() {
-		float x = Random.Range(-SCREEN_WIDTH * 0.5f, SCREEN_WIDTH * 0.5f);
-		float y = Random.Range(-SCREEN_HEIGHT * 0.5f, SCREEN_HEIGHT * 0.5f) + SCREEN_HEIGHT;
+		float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
+		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP) + SCREEN_HEIGHT;
 		
 		Vector3 position = new Vector3(x, y, PFB_CRATE.transform.position.z);
 		Instantiate(PFB_CRATE, position, PFB_CRATE.transform.rotation);
