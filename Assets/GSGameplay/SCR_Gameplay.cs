@@ -76,7 +76,9 @@ public class SCR_Gameplay : MonoBehaviour {
 		if (Input.GetMouseButton(0)) {
 			if (selectedZombie != null) {
 				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				selectedZombie.position = new Vector3(pos.x + offsetX, pos.y + offsetY, 0);
+				float x = Mathf.Clamp(pos.x + offsetX, GARDEN_LEFT, GARDEN_RIGHT);
+				float y = Mathf.Clamp(pos.y + offsetY, GARDEN_BOTTOM, GARDEN_TOP);
+				selectedZombie.position = new Vector3(x, y, 0);
 			}
 		}
 		
