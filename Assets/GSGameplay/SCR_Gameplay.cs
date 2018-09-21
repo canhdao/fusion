@@ -28,6 +28,7 @@ public class SCR_Gameplay : MonoBehaviour {
 
 	public GameObject cvsGameplay;
 	public GameObject garden;
+	public GameObject[] backgrounds;
 	
 	public Text txtBrain;
 
@@ -63,6 +64,12 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		brain = PlayerPrefs.GetInt("brain", 0);
 		txtBrain.text = brain.ToString();
+
+		backgrounds[0].SetActive(true);
+
+		for (int i = 1; i < backgrounds.Length; i++) {
+			backgrounds[i].SetActive(false);
+		}
 	}
 	
 	// Update is called once per frame
@@ -176,5 +183,13 @@ public class SCR_Gameplay : MonoBehaviour {
 		brain += amount;
 		txtBrain.text = brain.ToString();
 		PlayerPrefs.SetInt("brain", brain);
+	}
+
+	public void SwitchMap(int map) {
+		for (int i = 0; i < backgrounds.Length; i++) {
+			backgrounds[i].SetActive(false);
+		}
+
+		backgrounds[map - 1].SetActive(true);
 	}
 }
