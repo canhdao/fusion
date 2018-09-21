@@ -35,7 +35,8 @@ public class SCR_Tomb : MonoBehaviour {
 				animator.SetTrigger("bounce");
 				state = TombState.STAY;
 			}
-			transform.position = new Vector3(transform.position.x, y, transform.position.z);
+			float z = y;
+			transform.position = new Vector3(transform.position.x, y, z);
 		}
 	}
 	

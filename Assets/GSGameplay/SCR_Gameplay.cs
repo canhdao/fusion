@@ -85,7 +85,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				float x = Mathf.Clamp(pos.x + offsetX, GARDEN_LEFT, GARDEN_RIGHT);
 				float y = Mathf.Clamp(pos.y + offsetY, GARDEN_BOTTOM, GARDEN_TOP);
-				selectedZombie.position = new Vector3(x, y, 0);
+				float z = y;
+				selectedZombie.position = new Vector3(x, y, z);
 			}
 		}
 		
@@ -119,8 +120,9 @@ public class SCR_Gameplay : MonoBehaviour {
 	public void SpawnTomb() {
 		float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
 		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP) + SCREEN_HEIGHT;
+		float z = y;
 		
-		Vector3 position = new Vector3(x, y, PFB_TOMB.transform.position.z);
+		Vector3 position = new Vector3(x, y, z);
 		Instantiate(PFB_TOMB, position, PFB_TOMB.transform.rotation);
 	}
 	
@@ -147,6 +149,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		Vector3 position = (cow1.transform.position + cow2.transform.position) * 0.5f;
 		int cowIndex = (int)cow1.GetComponent<SCR_Zombie>().type + 1;
 		
+		// TEST
+		// if (cowIndex == 1) cowIndex = 7;
 		Instantiate(PFB_ZOMBIES[cowIndex], position, PFB_ZOMBIES[cowIndex].transform.rotation);
 		
 		Destroy(cow1);

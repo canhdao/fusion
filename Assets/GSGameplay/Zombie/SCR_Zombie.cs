@@ -12,7 +12,12 @@ public enum ZombieType {
 	ZOMBIE_7,
 	ZOMBIE_8,
 	ZOMBIE_9,
-	ZOMBIE_10
+	ZOMBIE_10,
+	ZOMBIE_11,
+	ZOMBIE_12,
+	ZOMBIE_13,
+	ZOMBIE_14,
+	ZOMBIE_15
 }
 
 public enum ZombieState {
@@ -21,11 +26,11 @@ public enum ZombieState {
 }
 
 public class SCR_Zombie : MonoBehaviour {
-	public const ZombieType LAST_TYPE = ZombieType.ZOMBIE_6;
+	public const ZombieType LAST_TYPE = ZombieType.ZOMBIE_15;
 	
 	public const float MOVE_RANGE = 1.0f;
 	public const float BRAIN_OFFSET_X = -1.0f;
-	public const float BRAIN_OFFSET_Y = 0.5f;
+	public const float BRAIN_OFFSET_Y = 0.0f;
 	
 	public ZombieType type = ZombieType.ZOMBIE_1;
 	public ZombieState state = ZombieState.AUTO_MOVE;
@@ -47,7 +52,9 @@ public class SCR_Zombie : MonoBehaviour {
 			x = Mathf.Clamp(x, SCR_Gameplay.GARDEN_LEFT, SCR_Gameplay.GARDEN_RIGHT);
 			y = Mathf.Clamp(y, SCR_Gameplay.GARDEN_BOTTOM, SCR_Gameplay.GARDEN_TOP);
 			
-			iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "time", 0.75f, "easetype", "easeInOutSine"));
+			float z = y;
+			
+			iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "z", z, "time", 0.75f, "easetype", "easeInOutSine"));
 		}
 	}
 	
@@ -56,7 +63,10 @@ public class SCR_Zombie : MonoBehaviour {
 	}
 	
 	public void SpawnBrain() {
-		Vector3 position = new Vector3(transform.position.x + BRAIN_OFFSET_X, transform.position.y + BRAIN_OFFSET_Y, transform.position.z);
+		float x = transform.position.x + BRAIN_OFFSET_X;
+		float y = transform.position.y + BRAIN_OFFSET_Y;
+		float z = y;
+		Vector3 position = new Vector3(x, y, z);
 		Instantiate(SCR_Gameplay.instance.PFB_BRAIN, position, SCR_Gameplay.instance.PFB_BRAIN.transform.rotation);
 	}
 }
