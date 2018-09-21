@@ -19,8 +19,11 @@ public class SCR_Gameplay : MonoBehaviour {
 	public static float GARDEN_TOP;
 	public static float GARDEN_BOTTOM;
 	
+	public static SCR_Gameplay instance;
+	
 	public GameObject PFB_TOMB;
 	public GameObject[] PFB_ZOMBIES;
+	public GameObject PFB_BRAIN;
 
 	public GameObject garden;
 	
@@ -29,6 +32,10 @@ public class SCR_Gameplay : MonoBehaviour {
 	private Transform selectedZombie = null;
 	private float offsetX = 0;
 	private float offsetY = 0;
+	
+	void Awake() {
+		instance = this;
+	}
 	
 	// Use this for initialization
 	void Start() {

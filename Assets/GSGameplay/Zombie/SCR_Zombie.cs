@@ -24,6 +24,8 @@ public class SCR_Zombie : MonoBehaviour {
 	public const ZombieType LAST_TYPE = ZombieType.ZOMBIE_6;
 	
 	public const float MOVE_RANGE = 1.0f;
+	public const float BRAIN_OFFSET_X = -1.0f;
+	public const float BRAIN_OFFSET_Y = 0.5f;
 	
 	public ZombieType type = ZombieType.ZOMBIE_1;
 	public ZombieState state = ZombieState.AUTO_MOVE;
@@ -45,11 +47,16 @@ public class SCR_Zombie : MonoBehaviour {
 			x = Mathf.Clamp(x, SCR_Gameplay.GARDEN_LEFT, SCR_Gameplay.GARDEN_RIGHT);
 			y = Mathf.Clamp(y, SCR_Gameplay.GARDEN_BOTTOM, SCR_Gameplay.GARDEN_TOP);
 			
-			iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "time", 0.5f, "easetype", "easeInOutSine"));
+			iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "time", 0.75f, "easetype", "easeInOutSine"));
 		}
 	}
 	
 	public void StopMoving() {
 		iTween.Stop(gameObject);
+	}
+	
+	public void SpawnBrain() {
+		Vector3 position = new Vector3(transform.position.x + BRAIN_OFFSET_X, transform.position.y + BRAIN_OFFSET_Y, transform.position.z);
+		Instantiate(SCR_Gameplay.instance.PFB_BRAIN, position, SCR_Gameplay.instance.PFB_BRAIN.transform.rotation);
 	}
 }
