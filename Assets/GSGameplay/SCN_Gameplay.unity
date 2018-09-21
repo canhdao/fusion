@@ -138,14 +138,14 @@ RectTransform:
   m_GameObject: {fileID: 226503765}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 1}
   m_Children: []
   m_Father: {fileID: 1835371253}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50.24, y: -32.36}
+  m_AnchoredPosition: {x: 163.19, y: -110.6}
   m_SizeDelta: {x: 175, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &226503767
@@ -215,8 +215,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 73.9, y: -33.2}
-  m_SizeDelta: {x: 13, y: 27}
+  m_AnchoredPosition: {x: 253.9, y: -115.1}
+  m_SizeDelta: {x: 55.974277, y: 108.655945}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &361577667
 MonoBehaviour:
@@ -239,11 +239,11 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 24
+    m_FontSize: 100
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
-    m_MaxSize: 40
+    m_MinSize: 1
+    m_MaxSize: 100
     m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -325,7 +325,9 @@ MonoBehaviour:
   - {fileID: 1469033404156514, guid: af72fbde8098b405db21a50038d77f9b, type: 2}
   - {fileID: 1469033404156514, guid: c10d5e115c1fc47319208b743c45f192, type: 2}
   PFB_BRAIN: {fileID: 1556095882282504, guid: 40e39d672b2cafd439da056e1e519620, type: 2}
+  cvsGameplay: {fileID: 1835371249}
   garden: {fileID: 1191582304}
+  txtBrain: {fileID: 361577667}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -675,7 +677,7 @@ GameObject:
   - component: {fileID: 1835371251}
   - component: {fileID: 1835371250}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: CVS_Gameplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -708,12 +710,12 @@ MonoBehaviour:
   m_Script: {fileID: 1980459831, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1024, y: 2048}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96

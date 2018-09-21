@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SCR_Gameplay : MonoBehaviour {
 	public const float TOMB_SPAWN_INTERVAL = 3.0f;
@@ -25,13 +26,18 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject[] PFB_ZOMBIES;
 	public GameObject PFB_BRAIN;
 
+	public GameObject cvsGameplay;
 	public GameObject garden;
 	
-	private float crateSpawnTime = 0;
+	public Text txtBrain;
+	
+	private float tombSpawnTime = TOMB_SPAWN_INTERVAL;
 	
 	private Transform selectedZombie = null;
 	private float offsetX = 0;
 	private float offsetY = 0;
+	
+	private int brain = 0;
 	
 	void Awake() {
 		instance = this;
@@ -52,6 +58,9 @@ public class SCR_Gameplay : MonoBehaviour {
 		GARDEN_RIGHT = GARDEN_X + GARDEN_WIDTH * 0.5f;
 		GARDEN_TOP = GARDEN_Y + GARDEN_HEIGHT * 0.5f;
 		GARDEN_BOTTOM = GARDEN_Y - GARDEN_HEIGHT * 0.5f;
+		
+		brain = 0;
+		txtBrain.text = "0";
 	}
 	
 	// Update is called once per frame
@@ -110,10 +119,10 @@ public class SCR_Gameplay : MonoBehaviour {
 			}
 		}
 
-		crateSpawnTime += Time.deltaTime;
-		if (crateSpawnTime >= TOMB_SPAWN_INTERVAL) {
+		tombSpawnTime += Time.deltaTime;
+		if (tombSpawnTime >= TOMB_SPAWN_INTERVAL) {
 			SpawnTomb();
-			crateSpawnTime = 0;
+			tombSpawnTime = 0;
 		}
 	}
 	
@@ -145,15 +154,20 @@ public class SCR_Gameplay : MonoBehaviour {
 		return bestHit;
 	}
 	
-	public void FuseZombie(GameObject cow1, GameObject cow2) {
-		Vector3 position = (cow1.transform.position + cow2.transform.position) * 0.5f;
-		int cowIndex = (int)cow1.GetComponent<SCR_Zombie>().type + 1;
+	public void FuseZombie(GameObject zombie1, GameObject zombie2) {
+		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
+		int zombieIndex = (int)zombie1.GetComponent<SCR_Zombie>().type + 1;
 		
 		// TEST
-		// if (cowIndex == 1) cowIndex = 7;
-		Instantiate(PFB_ZOMBIES[cowIndex], position, PFB_ZOMBIES[cowIndex].transform.rotation);
+		// if (zombieIndex == 1) zombieIndex = 7;
+		Instantiate(PFB_ZOMBIES[zombieIndex], position, PFB_ZOMBIES[zombieIndex].transform.rotation);
 		
-		Destroy(cow1);
-		Destroy(cow2);
+		Destroy(zombie1);
+		Destroy(zombie2);
+	}
+	
+	public void IncreaseBrain(int amount) {
+		brain += amount;
+		txtBrain.text = brain.ToString();
 	}
 }

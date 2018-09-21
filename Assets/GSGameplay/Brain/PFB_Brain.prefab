@@ -52,6 +52,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8db0a73b20ca3594dae68040790e8d7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PFB_PLUS_BRAIN: {fileID: 1246625029672114, guid: c57d5d60cc7fff1409220e68a209acd9,
+    type: 2}
 --- !u!212 &212478018005686866
 SpriteRenderer:
   m_ObjectHideFlags: 1
