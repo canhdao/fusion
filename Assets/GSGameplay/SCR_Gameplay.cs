@@ -61,8 +61,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		GARDEN_TOP = GARDEN_Y + GARDEN_HEIGHT * 0.5f;
 		GARDEN_BOTTOM = GARDEN_Y - GARDEN_HEIGHT * 0.5f;
 		
-		brain = 0;
-		txtBrain.text = "0";
+		brain = PlayerPrefs.GetInt("brain", 0);
+		txtBrain.text = brain.ToString();
 	}
 	
 	// Update is called once per frame
@@ -175,5 +175,6 @@ public class SCR_Gameplay : MonoBehaviour {
 	public void IncreaseBrain(int amount) {
 		brain += amount;
 		txtBrain.text = brain.ToString();
+		PlayerPrefs.SetInt("brain", brain);
 	}
 }
