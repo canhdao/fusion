@@ -145,7 +145,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 163.19, y: -110.6}
+  m_AnchoredPosition: {x: 163.1914, y: -110.599976}
   m_SizeDelta: {x: 175, y: 125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &226503767
@@ -215,8 +215,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 253.9, y: -115.1}
-  m_SizeDelta: {x: 55.974277, y: 108.655945}
+  m_AnchoredPosition: {x: 253.89844, y: -115.099976}
+  m_SizeDelta: {x: 55.741936, y: 109.41936}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &361577667
 MonoBehaviour:
@@ -328,6 +328,7 @@ MonoBehaviour:
   cvsGameplay: {fileID: 1835371249}
   garden: {fileID: 1191582304}
   txtBrain: {fileID: 361577667}
+  numberZombies: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0

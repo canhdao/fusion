@@ -30,6 +30,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject garden;
 	
 	public Text txtBrain;
+
+	public int numberZombies = 0;
 	
 	private float tombSpawnTime = TOMB_SPAWN_INTERVAL;
 	
@@ -120,7 +122,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 
 		tombSpawnTime += Time.deltaTime;
-		if (tombSpawnTime >= TOMB_SPAWN_INTERVAL) {
+		if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES) {
 			SpawnTomb();
 			tombSpawnTime = 0;
 		}
@@ -133,6 +135,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		Vector3 position = new Vector3(x, y, z);
 		Instantiate(PFB_TOMB, position, PFB_TOMB.transform.rotation);
+
+		numberZombies++;
 	}
 	
 	public RaycastHit2D FindBestHit(Vector3 pos) {
@@ -164,6 +168,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		Destroy(zombie1);
 		Destroy(zombie2);
+
+		numberZombies--;
 	}
 	
 	public void IncreaseBrain(int amount) {
