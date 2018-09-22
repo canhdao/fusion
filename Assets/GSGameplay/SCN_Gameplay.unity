@@ -522,12 +522,12 @@ MonoBehaviour:
   PFB_TOMB: {fileID: 1556877940519060, guid: 3e7d9cf225a7f4c42ba6d4ae06234284, type: 2}
   PFB_ZOMBIES:
   - {fileID: 1469033404156514, guid: c6741ea1b119f324cbd6a0c643df4b07, type: 2}
-  - {fileID: 1469033404156514, guid: 4d8f691ab1571214d9e142c2707a098f, type: 2}
-  - {fileID: 1469033404156514, guid: 9f8ca904c87007b47b67dfacb7ddfd5b, type: 2}
-  - {fileID: 1469033404156514, guid: 7acc1ecd2aa701b46bc388215d120c01, type: 2}
-  - {fileID: 1469033404156514, guid: f39a5397355303c469213566241fe257, type: 2}
-  - {fileID: 1469033404156514, guid: ee792174b92875a419c911db8e81cc4d, type: 2}
-  - {fileID: 1469033404156514, guid: c3e19f28252f2498faf89a7813522ef1, type: 2}
+  - {fileID: 1469033404156514, guid: 8a3f49fe5b11748929c6dfa94a4369f0, type: 2}
+  - {fileID: 1469033404156514, guid: c8d1457df43914106b2665438bcc7e3a, type: 2}
+  - {fileID: 1469033404156514, guid: a622fae183bfc432ab5e269e6c1660fe, type: 2}
+  - {fileID: 1469033404156514, guid: 97e6a8ac696d64c3ab2fdaa164da842c, type: 2}
+  - {fileID: 1469033404156514, guid: 772e600565c634d7d8a67c116da2c18d, type: 2}
+  - {fileID: 1469033404156514, guid: d7ce94bc395c34a3cb344ece976ed23f, type: 2}
   - {fileID: 1469033404156514, guid: 845f27951ece44df588a2bd741fcabe2, type: 2}
   - {fileID: 1469033404156514, guid: 644e6b106d56b4f9ba1e8c7830029ee8, type: 2}
   - {fileID: 1469033404156514, guid: 953e4b1e9d8c74090a383e502bd70ad2, type: 2}
