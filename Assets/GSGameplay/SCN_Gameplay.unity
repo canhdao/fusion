@@ -537,6 +537,8 @@ MonoBehaviour:
   - {fileID: 1469033404156514, guid: af72fbde8098b405db21a50038d77f9b, type: 2}
   - {fileID: 1469033404156514, guid: c10d5e115c1fc47319208b743c45f192, type: 2}
   PFB_BRAIN: {fileID: 1556095882282504, guid: 40e39d672b2cafd439da056e1e519620, type: 2}
+  PFB_FUSE_EFFECT: {fileID: 1531459815573076, guid: c4c2fdd8d18db4d5a9d548a0c4a63ff4,
+    type: 2}
   cvsGameplay: {fileID: 1835371249}
   garden: {fileID: 1191582304}
   backgrounds:

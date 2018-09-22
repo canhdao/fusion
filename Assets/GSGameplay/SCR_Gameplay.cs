@@ -25,6 +25,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject PFB_TOMB;
 	public GameObject[] PFB_ZOMBIES;
 	public GameObject PFB_BRAIN;
+	public GameObject PFB_FUSE_EFFECT;
 
 	public GameObject cvsGameplay;
 	public GameObject garden;
@@ -171,7 +172,9 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		// TEST
 		// if (zombieIndex == 1) zombieIndex = 7;
+		
 		Instantiate(PFB_ZOMBIES[zombieIndex], position, PFB_ZOMBIES[zombieIndex].transform.rotation);
+		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
 		
 		Destroy(zombie1);
 		Destroy(zombie2);

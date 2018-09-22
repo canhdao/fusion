@@ -55,6 +55,7 @@
   <ItemGroup>
      <Compile Include="Assets\GSGameplay\Brain\SCR_Brain.cs" />
      <Compile Include="Assets\GSGameplay\Brain\SCR_PlusBrain.cs" />
+     <Compile Include="Assets\GSGameplay\FuseEffect\SCR_FuseEffect.cs" />
      <Compile Include="Assets\GSGameplay\SCR_Gameplay.cs" />
      <Compile Include="Assets\GSGameplay\Tomb\SCR_Tomb.cs" />
      <Compile Include="Assets\GSGameplay\Zombie\SCR_Zombie.cs" />
