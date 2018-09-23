@@ -30,6 +30,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject cvsGameplay;
 	public GameObject garden;
 	public GameObject[] backgrounds;
+	public GameObject zombieShop;
 	
 	public Text txtBrain;
 
@@ -71,6 +72,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		for (int i = 1; i < backgrounds.Length; i++) {
 			backgrounds[i].SetActive(false);
 		}
+
+		zombieShop.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -172,7 +175,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		// TEST
 		// if (zombieIndex == 1) zombieIndex = 7;
-		
+
 		Instantiate(PFB_ZOMBIES[zombieIndex], position, PFB_ZOMBIES[zombieIndex].transform.rotation);
 		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
 		
@@ -194,5 +197,13 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 
 		backgrounds[map - 1].SetActive(true);
+	}
+
+	public void OpenZombieShop() {
+		zombieShop.SetActive(true);
+	}
+
+	public void CloseZombieShop() {
+		zombieShop.SetActive(false);
 	}
 }
