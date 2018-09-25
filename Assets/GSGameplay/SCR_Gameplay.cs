@@ -207,13 +207,13 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void DisappearShrinkMap(int map) {
-		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 0, "y", 0, "time", 0.5f, "oncomplete", "CompleteDisappearShrinkMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 0, "y", 0, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearShrinkMap", "oncompletetarget", gameObject));
 	}
 
 	public void AppearShrinkMap(int map) {
 		backgrounds[map - 1].SetActive(true);
 		backgrounds[map - 1].transform.localScale = new Vector3(10, 10, 1);
-		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
 	}
 
 	public void CompleteDisappearShrinkMap() {
@@ -222,13 +222,13 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void DisappearEnlargeMap(int map) {
-		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 10, "y", 10, "time", 0.5f, "oncomplete", "CompleteDisappearEnlargeMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 10, "y", 10, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearEnlargeMap", "oncompletetarget", gameObject));
 	}
 
 	public void AppearEnlargeMap(int map) {
 		backgrounds[map - 1].SetActive(true);
 		backgrounds[map - 1].transform.localScale = new Vector3(0, 0, 1);
-		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
 	}
 
 	public void CompleteDisappearEnlargeMap() {
