@@ -59,6 +59,7 @@
      <Compile Include="Assets\GSGameplay\SCR_Gameplay.cs" />
      <Compile Include="Assets\GSGameplay\Tomb\SCR_Tomb.cs" />
      <Compile Include="Assets\GSGameplay\Zombie\SCR_Zombie.cs" />
+     <Compile Include="Assets\GSGameplay\ZombieShop\SCR_ZombieShop.cs" />
      <Compile Include="Assets\SCR_Config.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>/Users/Canh/Desktop/Fusion/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

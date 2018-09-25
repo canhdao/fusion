@@ -194,6 +194,12 @@ public class SCR_Gameplay : MonoBehaviour {
 		PlayerPrefs.SetInt("brain", brain);
 	}
 
+	public void DecreaseBrain(int amount) {
+		brain -= amount;
+		txtBrain.text = brain.ToString();
+		PlayerPrefs.SetInt("brain", brain);
+	}
+
 	public void SwitchMap(int map) {
 		if (currentMap < map) {
 			DisappearShrinkMap(currentMap);
@@ -246,5 +252,20 @@ public class SCR_Gameplay : MonoBehaviour {
 
 	public void CloseZombieShop() {
 		zombieShop.SetActive(false);
+	}
+
+	public void BuyZombie(int index) {
+		if (numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES && brain >= SCR_Config.ZOMBIE_PRICES[index]) {
+			float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
+			float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
+			float z = y;
+			
+			Vector3 position = new Vector3(x, y, z);
+			Instantiate(PFB_ZOMBIES[index], position, PFB_ZOMBIES[index].transform.rotation);
+
+			numberZombies++;
+
+			DecreaseBrain(SCR_Config.ZOMBIE_PRICES[index]);
+		}
 	}
 }
