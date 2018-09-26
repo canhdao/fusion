@@ -47,6 +47,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	private int currentMap = 1;
 	private int nextMap = 1;
 	
+	private SCR_Map[] maps = null;
+	
 	void Awake() {
 		instance = this;
 	}
@@ -70,12 +72,15 @@ public class SCR_Gameplay : MonoBehaviour {
 		brain = PlayerPrefs.GetInt("brain", 0);
 		txtBrain.text = brain.ToString();
 
+		maps = new SCR_Map[backgrounds.Length];
+		
 		backgrounds[0].SetActive(true);
 
 		for (int i = 1; i < backgrounds.Length; i++) {
 			backgrounds[i].SetActive(false);
+			maps[i] = backgrounds[i].GetComponent<SCR_Map>();
 		}
-
+		
 		zombieShop.SetActive(false);
 	}
 	
@@ -177,7 +182,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		int zombieIndex = (int)zombie1.GetComponent<SCR_Zombie>().type + 1;
 		
 		// TEST
-		// if (zombieIndex == 1) zombieIndex = 7;
+		//if (zombieIndex == 1) zombieIndex = 7;
 
 		Instantiate(PFB_ZOMBIES[zombieIndex], position, PFB_ZOMBIES[zombieIndex].transform.rotation);
 		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
