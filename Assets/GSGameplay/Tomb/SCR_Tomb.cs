@@ -10,8 +10,6 @@ public enum TombState {
 public class SCR_Tomb : MonoBehaviour {
 	public const float GRAVITY = -50.0f;
 	
-	public GameObject PFB_ZOMBIE;
-	
 	private float endY = 0;
 	private float velocity = 0;
 	
@@ -38,10 +36,5 @@ public class SCR_Tomb : MonoBehaviour {
 			float z = y;
 			transform.position = new Vector3(transform.position.x, y, z);
 		}
-	}
-	
-	public void Open() {
-		Instantiate(PFB_ZOMBIE, transform.position, PFB_ZOMBIE.transform.rotation);
-		Destroy(gameObject);
 	}
 }

@@ -47,8 +47,6 @@ public class SCR_Gameplay : MonoBehaviour {
 	private int currentMap = 1;
 	private int nextMap = 1;
 	
-	private SCR_Map[] maps = null;
-	
 	void Awake() {
 		instance = this;
 	}
@@ -72,13 +70,10 @@ public class SCR_Gameplay : MonoBehaviour {
 		brain = PlayerPrefs.GetInt("brain", 0);
 		txtBrain.text = brain.ToString();
 
-		maps = new SCR_Map[backgrounds.Length];
-		
 		backgrounds[0].SetActive(true);
 
 		for (int i = 1; i < backgrounds.Length; i++) {
 			backgrounds[i].SetActive(false);
-			maps[i] = backgrounds[i].GetComponent<SCR_Map>();
 		}
 		
 		zombieShop.SetActive(false);
@@ -93,7 +88,9 @@ public class SCR_Gameplay : MonoBehaviour {
 				if (bestHit.transform.parent != null) {
 					SCR_Tomb scrTomb = bestHit.transform.parent.GetComponent<SCR_Tomb>();
 					if (scrTomb != null) {
-						scrTomb.Open();
+						GameObject zombie = Instantiate(PFB_ZOMBIES[0], backgrounds[currentMap - 1].transform);
+						zombie.transform.position = bestHit.transform.parent.position;
+						Destroy(bestHit.transform.parent.gameObject);
 					}
 				}
 				
@@ -152,8 +149,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP) + SCREEN_HEIGHT;
 		float z = y;
 		
-		Vector3 position = new Vector3(x, y, z);
-		Instantiate(PFB_TOMB, position, PFB_TOMB.transform.rotation);
+		GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
+		tomb.transform.position = new Vector3(x, y, z);
 
 		numberZombies++;
 	}
@@ -178,13 +175,26 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 	
 	public void FuseZombie(GameObject zombie1, GameObject zombie2) {
-		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
 		int zombieIndex = (int)zombie1.GetComponent<SCR_Zombie>().type + 1;
 		
 		// TEST
 		//if (zombieIndex == 1) zombieIndex = 7;
 
-		Instantiate(PFB_ZOMBIES[zombieIndex], position, PFB_ZOMBIES[zombieIndex].transform.rotation);
+		int map = 1;
+		if (zombieIndex <= 4) {
+			map = 1;
+		}
+		else if (zombieIndex <= 9) {
+			map = 2;
+		}
+		else if (zombieIndex <= 14) {
+			map = 3;
+		}
+		
+		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
+		
+		GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map - 1].transform);
+		zombie.transform.position = position;
 		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
 		
 		Destroy(zombie1);
@@ -265,8 +275,19 @@ public class SCR_Gameplay : MonoBehaviour {
 			float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
 			float z = y;
 			
-			Vector3 position = new Vector3(x, y, z);
-			Instantiate(PFB_ZOMBIES[index], position, PFB_ZOMBIES[index].transform.rotation);
+			int map = 1;
+			if (index <= 4) {
+				map = 1;
+			}
+			else if (index <= 9) {
+				map = 2;
+			}
+			else if (index <= 14) {
+				map = 3;
+			}
+			
+			GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map - 1].transform);
+			zombie.transform.position = new Vector3(x, y, z);
 
 			numberZombies++;
 
