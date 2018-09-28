@@ -15,15 +15,14 @@ public class SCR_Tomb : MonoBehaviour {
 	
 	private TombState state = TombState.FALL;
 	private Animator animator;
-
-	// Use this for initialization
+	
 	void Start() {
 		animator = GetComponent<Animator>();
-		
+		animator.keepAnimatorControllerStateOnDisable = true;
+	
 		endY = transform.position.y - SCR_Gameplay.SCREEN_HEIGHT;
 	}
 	
-	// Update is called once per frame
 	void Update() {
 		if (state == TombState.FALL) {
 			velocity -= GRAVITY * Time.deltaTime;

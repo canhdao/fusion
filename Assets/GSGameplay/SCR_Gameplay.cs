@@ -47,6 +47,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	private int currentMap = 1;
 	private int nextMap = 1;
 	
+	private bool switchingMap = false;
+	
 	void Awake() {
 		instance = this;
 	}
@@ -176,9 +178,6 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public void FuseZombie(GameObject zombie1, GameObject zombie2) {
 		int zombieIndex = (int)zombie1.GetComponent<SCR_Zombie>().type + 1;
-		
-		// TEST
-		//if (zombieIndex == 1) zombieIndex = 7;
 
 		int map = 1;
 		if (zombieIndex <= 4) {
@@ -216,19 +215,22 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void SwitchMap(int map) {
-		if (currentMap < map) {
-			DisappearShrinkMap(currentMap);
+		if (!switchingMap && map != currentMap) {
+			switchingMap = true;
 			nextMap = map;
-		}
+			
+			if (currentMap < map) {
+				DisappearShrinkMap(currentMap);
+			}
 
-		if (currentMap > map) {
-			DisappearEnlargeMap(currentMap);
-			nextMap = map;
+			if (currentMap > map) {
+				DisappearEnlargeMap(currentMap);
+			}
 		}
 	}
 
 	public void DisappearShrinkMap(int map) {
-		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 0, "y", 0, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearShrinkMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 0.01f, "y", 0.01f, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearShrinkMap", "oncompletetarget", gameObject));
 	}
 
 	public void AppearShrinkMap(int map) {
@@ -248,7 +250,7 @@ public class SCR_Gameplay : MonoBehaviour {
 
 	public void AppearEnlargeMap(int map) {
 		backgrounds[map - 1].SetActive(true);
-		backgrounds[map - 1].transform.localScale = new Vector3(0, 0, 1);
+		backgrounds[map - 1].transform.localScale = new Vector3(0.01f, 0.01f, 1);
 		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
 	}
 
@@ -259,6 +261,7 @@ public class SCR_Gameplay : MonoBehaviour {
 
 	public void CompleteSwitchMap() {
 		currentMap = nextMap;
+		switchingMap = false;
 	}
 
 	public void OpenZombieShop() {
