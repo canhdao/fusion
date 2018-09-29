@@ -10,10 +10,11 @@ public enum TombState {
 public class SCR_Tomb : MonoBehaviour {
 	public const float GRAVITY = -50.0f;
 	
+	public TombState state = TombState.FALL;
+	
 	private float endY = 0;
 	private float velocity = 0;
 	
-	private TombState state = TombState.FALL;
 	private Animator animator;
 	
 	void Start() {

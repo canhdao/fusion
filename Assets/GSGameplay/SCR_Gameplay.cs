@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class SCR_Gameplay : MonoBehaviour {
 	public const float TOMB_SPAWN_INTERVAL = 3.0f;
+	public const float HAND_OFFSET_X = 0.2f;
+	public const float HAND_OFFSET_Y = 0;
 	
 	public static float SCREEN_WIDTH;
 	public static float SCREEN_HEIGHT;
@@ -31,6 +33,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject garden;
 	public GameObject[] backgrounds;
 	public GameObject zombieShop;
+	public GameObject hand;
 	
 	public Text txtBrain;
 
@@ -48,6 +51,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	private int nextMap = 1;
 	
 	private bool switchingMap = false;
+
+	private bool showingTutorial = true;
 	
 	void Awake() {
 		instance = this;
@@ -79,6 +84,13 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 		
 		zombieShop.SetActive(false);
+
+		if (showingTutorial) {
+			ShowTutorial();
+		}
+		else {
+			hand.SetActive(false);
+		}
 	}
 	
 	// Update is called once per frame
@@ -93,6 +105,14 @@ public class SCR_Gameplay : MonoBehaviour {
 						GameObject zombie = Instantiate(PFB_ZOMBIES[0], backgrounds[currentMap - 1].transform);
 						zombie.transform.position = bestHit.transform.parent.position;
 						Destroy(bestHit.transform.parent.gameObject);
+
+						if (showingTutorial) {
+							if (hand.activeSelf) {
+								hand.SetActive(false);
+							}
+
+							showingTutorial = false;
+						}
 					}
 				}
 				
@@ -139,10 +159,12 @@ public class SCR_Gameplay : MonoBehaviour {
 			}
 		}
 
-		tombSpawnTime += Time.deltaTime;
-		if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES) {
-			SpawnTomb();
-			tombSpawnTime = 0;
+		if (!showingTutorial) {
+			tombSpawnTime += Time.deltaTime;
+			if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES) {
+				SpawnTomb();
+				tombSpawnTime = 0;
+			}
 		}
 	}
 	
@@ -296,5 +318,19 @@ public class SCR_Gameplay : MonoBehaviour {
 
 			DecreaseBrain(SCR_Config.ZOMBIE_PRICES[index]);
 		}
+	}
+
+	private void ShowTutorial() {
+		float x = Random.Range(GARDEN_LEFT * 0.5f, GARDEN_RIGHT * 0.5f);
+		float y = Random.Range(GARDEN_BOTTOM * 0.5f, GARDEN_TOP * 0.5f);
+		
+		GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
+		tomb.transform.position = new Vector3(x, y, y);
+		tomb.GetComponent<SCR_Tomb>().state = TombState.STAY;
+
+		hand.transform.position = new Vector3(x + HAND_OFFSET_X, y + HAND_OFFSET_Y, y + HAND_OFFSET_Y);
+		hand.SetActive(true);
+
+		numberZombies++;
 	}
 }

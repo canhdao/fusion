@@ -50,3 +50,6 @@ TagManager:
   - name: FuseEffect
     uniqueID: 2211827573
     locked: 0
+  - name: Hand
+    uniqueID: 2557521753
+    locked: 0
