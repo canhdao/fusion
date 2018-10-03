@@ -3,10 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum TutorialPhase {
+	OPEN_TOMB,
+	OPEN_ZOMBIE_SHOP,
+	BUY_ZOMBIE,
+	CLOSE_ZOMBIE_SHOP,
+	EVOLVE_ZOMBIE
+}
+
 public class SCR_Gameplay : MonoBehaviour {
 	public const float TOMB_SPAWN_INTERVAL = 3.0f;
-	public const float HAND_OFFSET_X = 0.2f;
-	public const float HAND_OFFSET_Y = 0;
+	
+	public const float HAND_ZOMBIE_OFFSET_X = 20.0f;
+	public const float HAND_ZOMBIE_OFFSET_Y = 0;
+	
+	public const float HAND_BUTTON_OFFSET_X = 20.0f;
+	public const float HAND_BUTTON_OFFSET_Y = -80.0f;
 	
 	public static float SCREEN_WIDTH;
 	public static float SCREEN_HEIGHT;
@@ -34,10 +46,15 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject[] backgrounds;
 	public GameObject zombieShop;
 	public GameObject hand;
+	public GameObject btnZombieShop;
+	public GameObject btnBuyZombie1;
+	public GameObject btnCloseZombieShop;
 	
 	public Text txtBrain;
 
 	public int numberZombies = 0;
+	
+	public bool showingTutorial = true;
 	
 	private float tombSpawnTime = TOMB_SPAWN_INTERVAL;
 	
@@ -52,7 +69,9 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	private bool switchingMap = false;
 
-	private bool showingTutorial = true;
+	private TutorialPhase tutorialPhase = TutorialPhase.OPEN_TOMB;
+	private Vector3 tutorialZombiePosition1 = Vector3.zero;
+	private Vector3 tutorialZombiePosition2 = Vector3.zero;
 	
 	void Awake() {
 		instance = this;
@@ -86,7 +105,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		zombieShop.SetActive(false);
 
 		if (showingTutorial) {
-			ShowTutorial();
+			ShowTutorial(TutorialPhase.OPEN_TOMB);
 		}
 		else {
 			hand.SetActive(false);
@@ -107,11 +126,10 @@ public class SCR_Gameplay : MonoBehaviour {
 						Destroy(bestHit.transform.parent.gameObject);
 
 						if (showingTutorial) {
-							if (hand.activeSelf) {
-								hand.SetActive(false);
+							if (tutorialPhase == TutorialPhase.OPEN_TOMB) {
+								tutorialZombiePosition1 = zombie.transform.position;
+								ShowTutorial(TutorialPhase.OPEN_ZOMBIE_SHOP);
 							}
-
-							showingTutorial = false;
 						}
 					}
 				}
@@ -222,6 +240,13 @@ public class SCR_Gameplay : MonoBehaviour {
 		Destroy(zombie2);
 
 		numberZombies--;
+		
+		if (showingTutorial) {
+			if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
+				hand.SetActive(false);
+				showingTutorial = false;
+			}
+		}
 	}
 	
 	public void IncreaseBrain(int amount) {
@@ -288,10 +313,22 @@ public class SCR_Gameplay : MonoBehaviour {
 
 	public void OpenZombieShop() {
 		zombieShop.SetActive(true);
+		
+		if (showingTutorial) {
+			if (tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
+				ShowTutorial(TutorialPhase.BUY_ZOMBIE);
+			}
+		}
 	}
 
 	public void CloseZombieShop() {
 		zombieShop.SetActive(false);
+		
+		if (showingTutorial) {
+			if (tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
+				ShowTutorial(TutorialPhase.EVOLVE_ZOMBIE);
+			}
+		}
 	}
 
 	public void BuyZombie(int index) {
@@ -317,20 +354,77 @@ public class SCR_Gameplay : MonoBehaviour {
 			numberZombies++;
 
 			DecreaseBrain(SCR_Config.ZOMBIE_PRICES[index]);
+			
+			if (showingTutorial) {
+				if (tutorialPhase == TutorialPhase.BUY_ZOMBIE) {
+					if (index == 0) {
+						tutorialZombiePosition2 = zombie.transform.position;
+						ShowTutorial(TutorialPhase.CLOSE_ZOMBIE_SHOP);
+					}
+				}
+			}
 		}
 	}
 
-	private void ShowTutorial() {
-		float x = Random.Range(GARDEN_LEFT * 0.5f, GARDEN_RIGHT * 0.5f);
-		float y = Random.Range(GARDEN_BOTTOM * 0.5f, GARDEN_TOP * 0.5f);
+	private void ShowTutorial(TutorialPhase phase) {
+		tutorialPhase = phase;
 		
-		GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
-		tomb.transform.position = new Vector3(x, y, y);
-		tomb.GetComponent<SCR_Tomb>().state = TombState.STAY;
+		if (tutorialPhase == TutorialPhase.OPEN_TOMB) {
+			float x = Random.Range(GARDEN_LEFT * 0.5f, GARDEN_RIGHT * 0.5f);
+			float y = Random.Range(GARDEN_BOTTOM * 0.5f, GARDEN_TOP * 0.5f);
+			
+			GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
+			tomb.transform.position = new Vector3(x, y, y);
+			tomb.GetComponent<SCR_Tomb>().state = TombState.STAY;
+			
+			x = x * 100 + HAND_ZOMBIE_OFFSET_X;
+			y = y * 100 + HAND_ZOMBIE_OFFSET_Y;
 
-		hand.transform.position = new Vector3(x + HAND_OFFSET_X, y + HAND_OFFSET_Y, y + HAND_OFFSET_Y);
-		hand.SetActive(true);
+			hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
+			hand.SetActive(true);
 
-		numberZombies++;
+			numberZombies++;
+		}
+		
+		if (tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
+			RectTransform buttonRT = btnZombieShop.GetComponent<RectTransform>();
+			RectTransform handRT = hand.GetComponent<RectTransform>();
+			
+			float x = -SCREEN_WIDTH * 100 * 0.5f + buttonRT.anchoredPosition.x + HAND_BUTTON_OFFSET_X;
+			float y = -SCREEN_HEIGHT * 100 * 0.5f + buttonRT.anchoredPosition.y + HAND_BUTTON_OFFSET_Y;
+			handRT.anchoredPosition = new Vector2(x, y);
+		}
+		
+		if (tutorialPhase == TutorialPhase.BUY_ZOMBIE) {
+			RectTransform buttonRT = btnBuyZombie1.GetComponent<RectTransform>();
+			RectTransform handRT = hand.GetComponent<RectTransform>();
+			
+			float x = SCREEN_WIDTH * 100 * 0.5f + buttonRT.anchoredPosition.x + HAND_BUTTON_OFFSET_X;
+			float y = SCREEN_HEIGHT * 100 * 0.5f + buttonRT.anchoredPosition.y + HAND_BUTTON_OFFSET_Y;
+			handRT.anchoredPosition = new Vector2(x, y);
+		}
+		
+		if (tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
+			RectTransform buttonRT = btnCloseZombieShop.GetComponent<RectTransform>();
+			RectTransform handRT = hand.GetComponent<RectTransform>();
+			
+			float x = buttonRT.anchoredPosition.x + HAND_BUTTON_OFFSET_X;
+			float y = SCREEN_HEIGHT * 100 * 0.5f + buttonRT.anchoredPosition.y + HAND_BUTTON_OFFSET_Y;
+			handRT.anchoredPosition = new Vector2(x, y);
+		}
+		
+		if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
+			iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", 1, "onupdate", "UpdateHandPosition", "looptype", "loop"));
+		}
+	}
+	
+	public void UpdateHandPosition(float t) {
+		float x = (tutorialZombiePosition2.x - tutorialZombiePosition1.x) * t + tutorialZombiePosition1.x;
+		float y = (tutorialZombiePosition2.y - tutorialZombiePosition1.y) * t + tutorialZombiePosition1.y;
+		
+		x = x * 100 + HAND_ZOMBIE_OFFSET_X;
+		y = y * 100 + HAND_ZOMBIE_OFFSET_Y;
+		
+		hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
 	}
 }
