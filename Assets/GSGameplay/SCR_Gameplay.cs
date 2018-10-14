@@ -42,6 +42,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject PFB_FUSE_EFFECT;
 
 	public GameObject cvsGameplay;
+	public GameObject cvsUpgrade;
+	public GameObject cvsCollection;
 	public GameObject garden;
 	public GameObject[] backgrounds;
 	public GameObject zombieShop;
@@ -110,6 +112,10 @@ public class SCR_Gameplay : MonoBehaviour {
 		else {
 			hand.SetActive(false);
 		}
+
+		cvsGameplay.SetActive(true);
+		cvsUpgrade.SetActive(false);
+		cvsCollection.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -329,6 +335,26 @@ public class SCR_Gameplay : MonoBehaviour {
 				ShowTutorial(TutorialPhase.EVOLVE_ZOMBIE);
 			}
 		}
+	}
+
+	public void OpenUpgrade() {
+		cvsGameplay.SetActive(false);
+		cvsUpgrade.SetActive(true);
+	}
+
+	public void CloseUpgrade() {
+		cvsUpgrade.SetActive(false);
+		cvsGameplay.SetActive(true);
+	}
+
+	public void OpenCollection() {
+		cvsGameplay.SetActive(false);
+		cvsCollection.SetActive(true);
+	}
+
+	public void CloseCollection() {
+		cvsCollection.SetActive(false);
+		cvsGameplay.SetActive(true);
 	}
 
 	public void BuyZombie(int index) {
