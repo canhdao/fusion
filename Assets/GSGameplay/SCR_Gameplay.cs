@@ -14,11 +14,14 @@ public enum TutorialPhase {
 public class SCR_Gameplay : MonoBehaviour {
 	public const float TOMB_SPAWN_INTERVAL = 3.0f;
 	
-	public const float HAND_ZOMBIE_OFFSET_X = 20.0f;
-	public const float HAND_ZOMBIE_OFFSET_Y = 0;
+	public const float HAND_TOMB_OFFSET_X = 50.0f;
+	public const float HAND_TOMB_OFFSET_Y = -40;
 	
-	public const float HAND_BUTTON_OFFSET_X = 20.0f;
-	public const float HAND_BUTTON_OFFSET_Y = -80.0f;
+	public const float HAND_ZOMBIE_OFFSET_X = 50.0f;
+	public const float HAND_ZOMBIE_OFFSET_Y = -50;
+	
+	public const float HAND_BUTTON_OFFSET_X = 70.0f;
+	public const float HAND_BUTTON_OFFSET_Y = -100.0f;
 	
 	public static float SCREEN_WIDTH;
 	public static float SCREEN_HEIGHT;
@@ -403,8 +406,8 @@ public class SCR_Gameplay : MonoBehaviour {
 			tomb.transform.position = new Vector3(x, y, y);
 			tomb.GetComponent<SCR_Tomb>().state = TombState.STAY;
 			
-			x = x * 100 + HAND_ZOMBIE_OFFSET_X;
-			y = y * 100 + HAND_ZOMBIE_OFFSET_Y;
+			x = x * 100 + HAND_TOMB_OFFSET_X;
+			y = y * 100 + HAND_TOMB_OFFSET_Y;
 
 			hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
 			hand.SetActive(true);
@@ -416,30 +419,25 @@ public class SCR_Gameplay : MonoBehaviour {
 			RectTransform buttonRT = btnZombieShop.GetComponent<RectTransform>();
 			RectTransform handRT = hand.GetComponent<RectTransform>();
 			
-			float x = -SCREEN_WIDTH * 100 * 0.5f + buttonRT.anchoredPosition.x + HAND_BUTTON_OFFSET_X;
-			float y = -SCREEN_HEIGHT * 100 * 0.5f + buttonRT.anchoredPosition.y + HAND_BUTTON_OFFSET_Y;
-			handRT.anchoredPosition = new Vector2(x, y);
+			handRT.anchoredPosition = GetHandPositionFromRT(buttonRT);
 		}
 		
 		if (tutorialPhase == TutorialPhase.BUY_ZOMBIE) {
 			RectTransform buttonRT = btnBuyZombie1.GetComponent<RectTransform>();
 			RectTransform handRT = hand.GetComponent<RectTransform>();
 			
-			float x = SCREEN_WIDTH * 100 * 0.5f + buttonRT.anchoredPosition.x + HAND_BUTTON_OFFSET_X;
-			float y = SCREEN_HEIGHT * 100 * 0.5f + buttonRT.anchoredPosition.y + HAND_BUTTON_OFFSET_Y;
-			handRT.anchoredPosition = new Vector2(x, y);
+			handRT.anchoredPosition = GetHandPositionFromRT(buttonRT);
 		}
 		
 		if (tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
 			RectTransform buttonRT = btnCloseZombieShop.GetComponent<RectTransform>();
 			RectTransform handRT = hand.GetComponent<RectTransform>();
 			
-			float x = buttonRT.anchoredPosition.x + HAND_BUTTON_OFFSET_X;
-			float y = SCREEN_HEIGHT * 100 * 0.5f + buttonRT.anchoredPosition.y + HAND_BUTTON_OFFSET_Y;
-			handRT.anchoredPosition = new Vector2(x, y);
+			handRT.anchoredPosition = GetHandPositionFromRT(buttonRT);
 		}
 		
 		if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
+			hand.GetComponent<Animator>().SetTrigger("drag");
 			iTween.ValueTo(gameObject, iTween.Hash("from", 0, "to", 1, "time", 1, "onupdate", "UpdateHandPosition", "looptype", "loop"));
 		}
 	}
@@ -452,5 +450,18 @@ public class SCR_Gameplay : MonoBehaviour {
 		y = y * 100 + HAND_ZOMBIE_OFFSET_Y;
 		
 		hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
+	}
+	
+	public Vector2 GetHandPositionFromRT(RectTransform rt) {
+		Vector3[] worldCorners = new Vector3[4];
+		rt.GetWorldCorners(worldCorners);
+		
+		Vector3 bottomLeft = worldCorners[0];
+		Vector3 bottomRight = worldCorners[3];
+		Vector3 topLeft = worldCorners[1];
+		
+		float x = (bottomLeft.x + bottomRight.x - Screen.width) * 0.5f * SCREEN_WIDTH * 100 / Screen.width + HAND_BUTTON_OFFSET_X;
+		float y = (bottomLeft.y + topLeft.y - Screen.height) * 0.5f * SCREEN_HEIGHT * 100 / Screen.height + HAND_BUTTON_OFFSET_Y;
+		return new Vector2(x, y);
 	}
 }
