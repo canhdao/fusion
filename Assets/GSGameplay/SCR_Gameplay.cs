@@ -47,6 +47,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject cvsGameplay;
 	public GameObject cvsUpgrade;
 	public GameObject cvsCollection;
+	public GameObject cvsDiscover;
 	public GameObject garden;
 	public GameObject[] backgrounds;
 	public GameObject zombieShop;
@@ -119,6 +120,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		cvsGameplay.SetActive(true);
 		cvsUpgrade.SetActive(false);
 		cvsCollection.SetActive(false);
+		cvsDiscover.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -256,6 +258,9 @@ public class SCR_Gameplay : MonoBehaviour {
 				showingTutorial = false;
 			}
 		}
+		
+		// check if it's a new zombie...
+		cvsDiscover.SetActive(true);
 	}
 	
 	public void IncreaseBrain(int amount) {
