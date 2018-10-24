@@ -366,7 +366,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void BuyZombie(int index) {
-		if (numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES && brain >= SCR_Config.ZOMBIE_PRICES[index]) {
+		if (numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES && brain >= SCR_Config.ZOMBIE_INFO[index].price) {
 			float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
 			float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
 			float z = y;
@@ -387,7 +387,7 @@ public class SCR_Gameplay : MonoBehaviour {
 
 			numberZombies++;
 
-			DecreaseBrain(SCR_Config.ZOMBIE_PRICES[index]);
+			DecreaseBrain(SCR_Config.ZOMBIE_INFO[index].price);
 			
 			if (showingTutorial) {
 				if (tutorialPhase == TutorialPhase.BUY_ZOMBIE) {

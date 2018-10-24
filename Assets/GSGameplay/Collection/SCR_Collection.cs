@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SCR_Collection : MonoBehaviour {
 	public GameObject[] zombies;
+	
+	public Text txtName;
+	public Text txtProductionRate;
+	public Text txtDescription;
+	
 	private int currentZombie = 0;
 	
 	// Use this for initialization
@@ -34,5 +40,9 @@ public class SCR_Collection : MonoBehaviour {
 		}
 		
 		zombies[currentZombie].SetActive(true);
+		
+		txtName.text = SCR_Config.ZOMBIE_INFO[currentZombie].name;
+		txtProductionRate.text = "Brains per second: " + SCR_Config.ZOMBIE_INFO[currentZombie].productionRate.ToString();
+		txtDescription.text = SCR_Config.ZOMBIE_INFO[currentZombie].description;
 	}
 }

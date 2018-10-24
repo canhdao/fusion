@@ -8,7 +8,7 @@ public class SCR_ZombieShop : MonoBehaviour {
 
 	void Start() {
 		for (int i = 0; i < zombiePrices.Length; i++) {
-			zombiePrices[i].text = SCR_Config.ZOMBIE_PRICES[i].ToString();
+			zombiePrices[i].text = SCR_Config.ZOMBIE_INFO[i].price.ToString();
 		}
 	}
 }
