@@ -41,8 +41,10 @@ public class SCR_Collection : MonoBehaviour {
 		
 		zombies[currentZombie].SetActive(true);
 		
-		txtName.text = SCR_Config.ZOMBIE_INFO[currentZombie].name;
-		txtProductionRate.text = "Brains per second: " + SCR_Config.ZOMBIE_INFO[currentZombie].productionRate.ToString();
-		txtDescription.text = SCR_Config.ZOMBIE_INFO[currentZombie].description;
+		string productionRate = "Brains per second: " + SCR_Config.ZOMBIE_INFO[currentZombie].productionRate.ToString();
+		
+		txtName.text = SCR_Config.ZOMBIE_INFO[currentZombie].name.ToUpper();
+		txtProductionRate.text = productionRate.ToUpper();
+		txtDescription.text = SCR_Config.ZOMBIE_INFO[currentZombie].description.ToUpper();
 	}
 }
