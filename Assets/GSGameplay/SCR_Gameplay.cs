@@ -68,8 +68,6 @@ public class SCR_Gameplay : MonoBehaviour {
 	private float offsetX = 0;
 	private float offsetY = 0;
 	
-	private int brain = 0;
-
 	private int currentMap = 1;
 	private int nextMap = 1;
 	
@@ -85,6 +83,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start() {
+		//SCR_Profile.Reset();
 		SCREEN_HEIGHT = Camera.main.orthographicSize * 2;
 		SCREEN_WIDTH = SCREEN_HEIGHT * Screen.width / Screen.height;
 
@@ -99,8 +98,14 @@ public class SCR_Gameplay : MonoBehaviour {
 		GARDEN_TOP = GARDEN_Y + GARDEN_HEIGHT * 0.5f;
 		GARDEN_BOTTOM = GARDEN_Y - GARDEN_HEIGHT * 0.5f;
 		
-		brain = PlayerPrefs.GetInt("brain", 0);
-		txtBrain.text = brain.ToString();
+		SCR_Profile.Load();
+		txtBrain.text = SCR_Profile.brain.ToString();
+		
+		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
+			SpawnZombie(i, SCR_Profile.numberZombies[i]);
+		}
+		
+		showingTutorial = !SCR_Profile.finishedTutorial;
 
 		backgrounds[0].SetActive(true);
 
@@ -132,7 +137,11 @@ public class SCR_Gameplay : MonoBehaviour {
 				if (bestHit.transform.parent != null) {
 					SCR_Tomb scrTomb = bestHit.transform.parent.GetComponent<SCR_Tomb>();
 					if (scrTomb != null) {
-						GameObject zombie = Instantiate(PFB_ZOMBIES[0], backgrounds[currentMap - 1].transform);
+						GameObject zombie = SpawnZombie(0);
+						
+						SCR_Profile.numberZombies[0]++;
+						SCR_Profile.SaveNumberZombies();
+						
 						zombie.transform.position = bestHit.transform.parent.position;
 						Destroy(bestHit.transform.parent.gameObject);
 
@@ -227,8 +236,37 @@ public class SCR_Gameplay : MonoBehaviour {
 		return bestHit;
 	}
 	
+	public GameObject SpawnZombie(int index) {
+		float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
+		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
+		float z = y;
+		
+		int map = 1;
+		if (index <= 4) {
+			map = 1;
+		}
+		else if (index <= 9) {
+			map = 2;
+		}
+		else if (index <= 14) {
+			map = 3;
+		}
+		
+		GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map - 1].transform);
+		zombie.transform.position = new Vector3(x, y, z);
+		
+		return zombie;
+	}
+	
+	public void SpawnZombie(int index, int count) {
+		for (int i = 0; i < count; i++) {
+			SpawnZombie(index);
+		}
+	}
+	
 	public void FuseZombie(GameObject zombie1, GameObject zombie2) {
-		int zombieIndex = (int)zombie1.GetComponent<SCR_Zombie>().type + 1;
+		int originalIndex = (int)zombie1.GetComponent<SCR_Zombie>().type;
+		int zombieIndex = originalIndex + 1;
 
 		int map = 1;
 		if (zombieIndex <= 4) {
@@ -252,10 +290,16 @@ public class SCR_Gameplay : MonoBehaviour {
 
 		numberZombies--;
 		
+		SCR_Profile.numberZombies[zombieIndex]++;
+		SCR_Profile.numberZombies[originalIndex] -= 2;
+		SCR_Profile.SaveNumberZombies();
+		
 		if (showingTutorial) {
 			if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
 				hand.SetActive(false);
 				showingTutorial = false;
+				SCR_Profile.finishedTutorial = true;
+				SCR_Profile.SaveTutorial();
 			}
 		}
 		
@@ -264,15 +308,15 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 	
 	public void IncreaseBrain(int amount) {
-		brain += amount;
-		txtBrain.text = brain.ToString();
-		PlayerPrefs.SetInt("brain", brain);
+		SCR_Profile.brain += amount;
+		txtBrain.text = SCR_Profile.brain.ToString();
+		SCR_Profile.SaveBrain();
 	}
 
 	public void DecreaseBrain(int amount) {
-		brain -= amount;
-		txtBrain.text = brain.ToString();
-		PlayerPrefs.SetInt("brain", brain);
+		SCR_Profile.brain -= amount;
+		txtBrain.text = SCR_Profile.brain.ToString();
+		SCR_Profile.SaveBrain();
 	}
 
 	public void SwitchMap(int map) {
@@ -366,24 +410,10 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void BuyZombie(int index) {
-		if (numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES && brain >= SCR_Config.ZOMBIE_INFO[index].price) {
-			float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
-			float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
-			float z = y;
-			
-			int map = 1;
-			if (index <= 4) {
-				map = 1;
-			}
-			else if (index <= 9) {
-				map = 2;
-			}
-			else if (index <= 14) {
-				map = 3;
-			}
-			
-			GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map - 1].transform);
-			zombie.transform.position = new Vector3(x, y, z);
+		if (numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
+			GameObject zombie = SpawnZombie(index);
+			SCR_Profile.numberZombies[index]++;
+			SCR_Profile.SaveNumberZombies();
 
 			numberZombies++;
 
