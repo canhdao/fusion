@@ -9,12 +9,16 @@ public class SCR_PlusBrain : MonoBehaviour {
 	private Text text;
 	private RectTransform rectTransform;
 	
-	void Start() {
+	public void Start() {
 		text = GetComponent<Text>();
 		rectTransform = GetComponent<RectTransform>();
 		
 		iTween.ValueTo(gameObject, iTween.Hash("from", rectTransform.anchoredPosition.y, "to", rectTransform.anchoredPosition.y + MOVE_UP_DISTANCE, "time", 1.0f, "easetype", "easeOutSine", "onupdate", "UpdateY"));
 		iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 0.5f, "delay", 0.5f, "onupdate", "UpdateAlpha", "oncomplete", "AutoDestroy"));
+	}
+	
+	public void OnDisable() {
+		Destroy(gameObject);
 	}
 	
 	private void UpdateAlpha(float alpha) {

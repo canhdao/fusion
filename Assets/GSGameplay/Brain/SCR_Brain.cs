@@ -25,18 +25,20 @@ public class SCR_Brain : MonoBehaviour {
 	}
 	
 	private void OnCompleteFadeOut() {
-		GameObject plusBrain = Instantiate(PFB_PLUS_BRAIN);
-		
-		RectTransform rectTransform = plusBrain.GetComponent<RectTransform>();
-		RectTransform canvasRT = SCR_Gameplay.instance.cvsGameplay.GetComponent<RectTransform>();
-		rectTransform.SetParent(canvasRT, false);
-		rectTransform.SetAsFirstSibling();
-		
-		float x = transform.position.x / SCR_Gameplay.SCREEN_WIDTH * canvasRT.rect.width;
-		float y = transform.position.y / SCR_Gameplay.SCREEN_HEIGHT * canvasRT.rect.height + PLUS_BRAIN_OFFSET_Y;
-		rectTransform.anchoredPosition = new Vector2(x, y);
-		
-		plusBrain.GetComponent<Text>().text = "+" + SCR_Config.PLUS_BRAIN_AMOUNT.ToString();
+		if (SCR_Gameplay.instance.cvsGameplay.activeSelf) {
+			GameObject plusBrain = Instantiate(PFB_PLUS_BRAIN);
+			
+			RectTransform rectTransform = plusBrain.GetComponent<RectTransform>();
+			RectTransform canvasRT = SCR_Gameplay.instance.cvsGameplay.GetComponent<RectTransform>();
+			rectTransform.SetParent(canvasRT, false);
+			rectTransform.SetAsFirstSibling();
+			
+			float x = transform.position.x / SCR_Gameplay.SCREEN_WIDTH * canvasRT.rect.width;
+			float y = transform.position.y / SCR_Gameplay.SCREEN_HEIGHT * canvasRT.rect.height + PLUS_BRAIN_OFFSET_Y;
+			rectTransform.anchoredPosition = new Vector2(x, y);
+			
+			plusBrain.GetComponent<Text>().text = "+" + SCR_Config.PLUS_BRAIN_AMOUNT.ToString();
+		}
 		
 		SCR_Gameplay.instance.IncreaseBrain(SCR_Config.PLUS_BRAIN_AMOUNT);
 		
