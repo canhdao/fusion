@@ -14,14 +14,14 @@ public class SCR_PlusBrain : MonoBehaviour {
 		rectTransform = GetComponent<RectTransform>();
 		
 		iTween.ValueTo(gameObject, iTween.Hash("from", rectTransform.anchoredPosition.y, "to", rectTransform.anchoredPosition.y + MOVE_UP_DISTANCE, "time", 1.0f, "easetype", "easeOutSine", "onupdate", "UpdateY"));
-		iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 0.5f, "delay", 0.5f, "onupdate", "UpdateAlpha", "oncomplete", "Destroy"));
+		iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 0.5f, "delay", 0.5f, "onupdate", "UpdateAlpha", "oncomplete", "AutoDestroy"));
 	}
 	
 	private void UpdateAlpha(float alpha) {
 		text.color = new Color(text.color.r, text.color.g, text.color.b, alpha);
 	}
 	
-	private void Destroy() {
+	private void AutoDestroy() {
 		Destroy(gameObject);
 	}
 	
