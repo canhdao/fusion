@@ -7,6 +7,7 @@ public class SCR_Profile {
 	
 	public static int brain = 0;
 	public static int[] numberZombies = new int[NUMBER_ZOMBIES];
+	public static int numberTombs = 0;
 	
 	public static bool finishedTutorial = false;
 	
@@ -17,12 +18,15 @@ public class SCR_Profile {
 			numberZombies[i] = PlayerPrefs.GetInt("zombie" + i.ToString(), 0);
 		}
 		
+		numberTombs = PlayerPrefs.GetInt("tomb", 0);
+		
 		finishedTutorial = PlayerPrefs.GetInt("finishedTutorial", 0) == 1;
 	}
 	
 	public static void Save() {
 		SaveBrain();
 		SaveNumberZombies();
+		SaveNumberTombs();
 		SaveTutorial();
 	}
 	
@@ -32,6 +36,8 @@ public class SCR_Profile {
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			numberZombies[i] = 0;
 		}
+		
+		numberTombs = 0;
 		
 		finishedTutorial = false;
 		
@@ -46,6 +52,10 @@ public class SCR_Profile {
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			PlayerPrefs.SetInt("zombie" + i.ToString(), numberZombies[i]);
 		}
+	}
+	
+	public static void SaveNumberTombs() {
+		PlayerPrefs.SetInt("tomb", numberTombs);
 	}
 	
 	public static void SaveTutorial() {

@@ -105,6 +105,10 @@ public class SCR_Gameplay : MonoBehaviour {
 			SpawnZombie(i, SCR_Profile.numberZombies[i]);
 		}
 		
+		for (int i = 0; i < SCR_Profile.numberTombs; i++) {
+			SpawnTomb();
+		}
+		
 		showingTutorial = !SCR_Profile.finishedTutorial;
 
 		backgrounds[0].SetActive(true);
@@ -141,6 +145,9 @@ public class SCR_Gameplay : MonoBehaviour {
 						
 						SCR_Profile.numberZombies[0]++;
 						SCR_Profile.SaveNumberZombies();
+						
+						SCR_Profile.numberTombs--;
+						SCR_Profile.SaveNumberTombs();
 						
 						zombie.transform.position = bestHit.transform.parent.position;
 						Destroy(bestHit.transform.parent.gameObject);
@@ -202,6 +209,9 @@ public class SCR_Gameplay : MonoBehaviour {
 			if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES) {
 				SpawnTomb();
 				tombSpawnTime = 0;
+				
+				SCR_Profile.numberTombs++;
+				SCR_Profile.SaveNumberTombs();
 			}
 		}
 	}
@@ -254,6 +264,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map - 1].transform);
 		zombie.transform.position = new Vector3(x, y, z);
+		
+		numberZombies++;
 		
 		return zombie;
 	}
@@ -414,8 +426,6 @@ public class SCR_Gameplay : MonoBehaviour {
 			GameObject zombie = SpawnZombie(index);
 			SCR_Profile.numberZombies[index]++;
 			SCR_Profile.SaveNumberZombies();
-
-			numberZombies++;
 
 			DecreaseBrain(SCR_Config.ZOMBIE_INFO[index].price);
 			
