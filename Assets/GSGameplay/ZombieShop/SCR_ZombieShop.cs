@@ -7,8 +7,14 @@ public class SCR_ZombieShop : MonoBehaviour {
 	public Text[] zombieNames;
 	public Text[] zombieProductionRates;
 	public Text[] zombiePrices;
+	
+	private RectTransform content = null;
 
-	void Start() {
+	public void Awake() {		
+		content = (RectTransform)transform.Find("Viewport/Content");
+	}
+	
+	public void Start() {
 		for (int i = 0; i < zombiePrices.Length; i++) {
 			string productionRate = "PRODUCE " + SCR_Config.ZOMBIE_INFO[i].productionRate.ToString() + "/s";
 			
@@ -16,5 +22,17 @@ public class SCR_ZombieShop : MonoBehaviour {
 			zombieProductionRates[i].text = productionRate;
 			zombiePrices[i].text = SCR_Config.ZOMBIE_INFO[i].price.ToString();
 		}
+	}
+	
+	public void Refresh() {
+		for (int i = 0; i <= SCR_Profile.zombieUnlocked; i++) {
+			content.GetChild(i).gameObject.SetActive(true);
+		}
+		
+		for (int i = SCR_Profile.zombieUnlocked + 1; i < content.childCount; i++) {
+			content.GetChild(i).gameObject.SetActive(false);
+		}
+		
+		content.sizeDelta = new Vector2(content.sizeDelta.x, 280 + (SCR_Profile.zombieUnlocked + 1) * 250);
 	}
 }

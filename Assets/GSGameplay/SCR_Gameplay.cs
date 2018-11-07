@@ -58,7 +58,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public Text txtBrain;
 
-	public int numberZombies = 0;
+	private int[] numberZombies = new int[3];
 	
 	public bool showingTutorial = true;
 	
@@ -76,6 +76,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	private TutorialPhase tutorialPhase = TutorialPhase.OPEN_TOMB;
 	private Vector3 tutorialZombiePosition1 = Vector3.zero;
 	private Vector3 tutorialZombiePosition2 = Vector3.zero;
+	
+	private SCR_ZombieShop scrZombieShop = null;
 	
 	void Awake() {
 		instance = this;
@@ -130,6 +132,9 @@ public class SCR_Gameplay : MonoBehaviour {
 		cvsUpgrade.SetActive(false);
 		cvsCollection.SetActive(false);
 		cvsDiscover.SetActive(false);
+		
+		scrZombieShop = cvsGameplay.transform.Find("ZombieShop").GetComponent<SCR_ZombieShop>();
+		scrZombieShop.Refresh();
 	}
 	
 	// Update is called once per frame
@@ -206,7 +211,7 @@ public class SCR_Gameplay : MonoBehaviour {
 
 		if (!showingTutorial) {
 			tombSpawnTime += Time.deltaTime;
-			if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES) {
+			if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberZombies[currentMap - 1] < SCR_Config.MAX_NUMBER_ZOMBIES) {
 				SpawnTomb();
 				tombSpawnTime = 0;
 				
@@ -224,7 +229,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
 		tomb.transform.position = new Vector3(x, y, z);
 
-		numberZombies++;
+		numberZombies[0]++;
 	}
 	
 	public RaycastHit2D FindBestHit(Vector3 pos) {
@@ -265,7 +270,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map - 1].transform);
 		zombie.transform.position = new Vector3(x, y, z);
 		
-		numberZombies++;
+		numberZombies[map - 1]++;
 		
 		return zombie;
 	}
@@ -300,7 +305,18 @@ public class SCR_Gameplay : MonoBehaviour {
 		Destroy(zombie1);
 		Destroy(zombie2);
 
-		numberZombies--;
+		int originalMap = 1;
+		if (originalIndex <= 4) {
+			originalMap = 1;
+		}
+		else if (originalIndex <= 9) {
+			originalMap = 2;
+		}
+		else if (originalIndex <= 14) {
+			originalMap = 3;
+		}
+		
+		numberZombies[originalMap - 1]--;
 		
 		SCR_Profile.numberZombies[zombieIndex]++;
 		SCR_Profile.numberZombies[originalIndex] -= 2;
@@ -315,8 +331,14 @@ public class SCR_Gameplay : MonoBehaviour {
 			}
 		}
 		
-		// check if it's a new zombie...
-		cvsDiscover.SetActive(true);
+		if (zombieIndex > SCR_Profile.zombieUnlocked) {
+			cvsDiscover.SetActive(true);
+			
+			SCR_Profile.zombieUnlocked = zombieIndex;
+			SCR_Profile.SaveZombieUnlocked();
+			
+			scrZombieShop.Refresh();
+		}
 	}
 	
 	public void IncreaseBrain(int amount) {
@@ -422,7 +444,18 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void BuyZombie(int index) {
-		if (numberZombies < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
+		int map = 1;
+		if (index <= 4) {
+			map = 1;
+		}
+		else if (index <= 9) {
+			map = 2;
+		}
+		else if (index <= 14) {
+			map = 3;
+		}
+
+		if (numberZombies[map - 1] < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
 			GameObject zombie = SpawnZombie(index);
 			SCR_Profile.numberZombies[index]++;
 			SCR_Profile.SaveNumberZombies();
@@ -457,7 +490,7 @@ public class SCR_Gameplay : MonoBehaviour {
 			hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
 			hand.SetActive(true);
 
-			numberZombies++;
+			numberZombies[0]++;
 		}
 		
 		if (tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
