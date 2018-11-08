@@ -5,22 +5,28 @@ using UnityEngine;
 public class SCR_DiscoverZombie : MonoBehaviour {
 	public const float DISPLAY_TIME = 3;
 	
+	public GameObject[] zombies;
+	
 	private float displayTime = 0;
 	
-	// Use this for initialization
-	void Start() {
+	public void Start() {
 		
 	}
 	
-	// Update is called once per frame
-	void Update() {
+	public void Update() {
 		displayTime += Time.deltaTime;
 		if (displayTime >= DISPLAY_TIME) {
 			gameObject.SetActive(false);
 		}
 	}
 	
-	public void ShowNewZombie() {
+	public void ShowNewZombie(int index) {
 		displayTime = 0;
+		
+		for (int i = 0; i < zombies.Length; i++) {
+			zombies[i].SetActive(false);
+		}
+		
+		zombies[index].SetActive(true);
 	}
 }

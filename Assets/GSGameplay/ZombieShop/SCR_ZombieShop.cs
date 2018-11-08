@@ -8,12 +8,8 @@ public class SCR_ZombieShop : MonoBehaviour {
 	public Text[] zombieProductionRates;
 	public Text[] zombiePrices;
 	
-	private RectTransform content = null;
+	public RectTransform content;
 
-	public void Awake() {		
-		content = (RectTransform)transform.Find("Viewport/Content");
-	}
-	
 	public void Start() {
 		for (int i = 0; i < zombiePrices.Length; i++) {
 			string productionRate = "PRODUCE " + SCR_Config.ZOMBIE_INFO[i].productionRate.ToString() + "/s";

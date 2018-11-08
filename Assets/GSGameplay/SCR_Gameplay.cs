@@ -307,6 +307,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 		
 		if (zombieIndex > SCR_Profile.zombieUnlocked) {
+			cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(zombieIndex);
 			cvsDiscover.SetActive(true);
 			
 			SCR_Profile.zombieUnlocked = zombieIndex;
