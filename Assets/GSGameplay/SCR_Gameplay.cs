@@ -85,7 +85,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start() {
-		SCR_Profile.Reset();
+		//SCR_Profile.Reset();
 		SCREEN_HEIGHT = Camera.main.orthographicSize * 2;
 		SCREEN_WIDTH = SCREEN_HEIGHT * Screen.width / Screen.height;
 
