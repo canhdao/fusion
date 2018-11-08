@@ -68,8 +68,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	private float offsetX = 0;
 	private float offsetY = 0;
 	
-	private int currentMap = 1;
-	private int nextMap = 1;
+	private int currentMap = 0;
+	private int nextMap = 0;
 	
 	private bool switchingMap = false;
 
@@ -258,21 +258,12 @@ public class SCR_Gameplay : MonoBehaviour {
 		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
 		float z = y;
 		
-		int map = 1;
-		if (index <= 4) {
-			map = 1;
-		}
-		else if (index <= 9) {
-			map = 2;
-		}
-		else if (index <= 14) {
-			map = 3;
-		}
+		int map = GetMapFromZombieIndex(index);
 		
-		GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map - 1].transform);
+		GameObject zombie = Instantiate(PFB_ZOMBIES[index], backgrounds[map].transform);
 		zombie.transform.position = new Vector3(x, y, z);
 		
-		numberUnits[map - 1]++;
+		numberUnits[map]++;
 		
 		return zombie;
 	}
@@ -287,39 +278,20 @@ public class SCR_Gameplay : MonoBehaviour {
 		int originalIndex = (int)zombie1.GetComponent<SCR_Zombie>().type;
 		int zombieIndex = originalIndex + 1;
 
-		int map = 1;
-		if (zombieIndex <= 4) {
-			map = 1;
-		}
-		else if (zombieIndex <= 9) {
-			map = 2;
-		}
-		else if (zombieIndex <= 14) {
-			map = 3;
-		}
+		int originalMap = GetMapFromZombieIndex(originalIndex);		
+		int map = GetMapFromZombieIndex(zombieIndex);
 		
 		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
 		
-		GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map - 1].transform);
+		GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map].transform);
 		zombie.transform.position = position;
 		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
 		
 		Destroy(zombie1);
 		Destroy(zombie2);
 
-		int originalMap = 1;
-		if (originalIndex <= 4) {
-			originalMap = 1;
-		}
-		else if (originalIndex <= 9) {
-			originalMap = 2;
-		}
-		else if (originalIndex <= 14) {
-			originalMap = 3;
-		}
-		
-		numberUnits[map - 1]++;
-		numberUnits[originalMap - 1] -= 2;
+		numberUnits[map]++;
+		numberUnits[originalMap] -= 2;
 		
 		SCR_Profile.numberZombies[zombieIndex]++;
 		SCR_Profile.numberZombies[originalIndex] -= 2;
@@ -372,32 +344,32 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void DisappearShrinkMap(int map) {
-		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 0.01f, "y", 0.01f, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearShrinkMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[currentMap], iTween.Hash("x", 0.01f, "y", 0.01f, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearShrinkMap", "oncompletetarget", gameObject));
 	}
 
 	public void AppearShrinkMap(int map) {
-		backgrounds[map - 1].SetActive(true);
-		backgrounds[map - 1].transform.localScale = new Vector3(10, 10, 1);
-		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
+		backgrounds[map].SetActive(true);
+		backgrounds[map].transform.localScale = new Vector3(10, 10, 1);
+		iTween.ScaleTo(backgrounds[map], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
 	}
 
 	public void CompleteDisappearShrinkMap() {
-		backgrounds[currentMap - 1].SetActive(false);
+		backgrounds[currentMap].SetActive(false);
 		AppearShrinkMap(nextMap);
 	}
 
 	public void DisappearEnlargeMap(int map) {
-		iTween.ScaleTo(backgrounds[currentMap - 1], iTween.Hash("x", 10, "y", 10, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearEnlargeMap", "oncompletetarget", gameObject));
+		iTween.ScaleTo(backgrounds[currentMap], iTween.Hash("x", 10, "y", 10, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteDisappearEnlargeMap", "oncompletetarget", gameObject));
 	}
 
 	public void AppearEnlargeMap(int map) {
-		backgrounds[map - 1].SetActive(true);
-		backgrounds[map - 1].transform.localScale = new Vector3(0.01f, 0.01f, 1);
-		iTween.ScaleTo(backgrounds[map - 1], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
+		backgrounds[map].SetActive(true);
+		backgrounds[map].transform.localScale = new Vector3(0.01f, 0.01f, 1);
+		iTween.ScaleTo(backgrounds[map], iTween.Hash("x", 1, "y", 1, "time", 0.5f, "easetype", "easeInOutSine", "oncomplete", "CompleteSwitchMap", "oncompletetarget", gameObject));
 	}
 
 	public void CompleteDisappearEnlargeMap() {
-		backgrounds[currentMap - 1].SetActive(false);
+		backgrounds[currentMap].SetActive(false);
 		AppearEnlargeMap(nextMap);
 	}
 
@@ -447,18 +419,9 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void BuyZombie(int index) {
-		int map = 1;
-		if (index <= 4) {
-			map = 1;
-		}
-		else if (index <= 9) {
-			map = 2;
-		}
-		else if (index <= 14) {
-			map = 3;
-		}
+		int map = GetMapFromZombieIndex(index);
 
-		if (numberUnits[map - 1] < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
+		if (numberUnits[map] < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
 			GameObject zombie = SpawnZombie(index);
 			SCR_Profile.numberZombies[index]++;
 			SCR_Profile.SaveNumberZombies();
@@ -477,6 +440,22 @@ public class SCR_Gameplay : MonoBehaviour {
 		else {
 			// Show reason cannot buy
 		}
+	}
+	
+	public int GetMapFromZombieIndex(int zombieIndex) {
+		int map = 0;
+		
+		if (zombieIndex <= 4) {
+			map = 0;
+		}
+		else if (zombieIndex <= 9) {
+			map = 1;
+		}
+		else if (zombieIndex <= 14) {
+			map = 2;
+		}
+		
+		return map;
 	}
 
 	private void ShowTutorial(TutorialPhase phase) {
