@@ -21,20 +21,20 @@ public class SCR_Tomb : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		animator.keepAnimatorControllerStateOnDisable = true;
 	
-		endY = transform.position.y - SCR_Gameplay.SCREEN_HEIGHT;
+		endY = transform.localPosition.y - SCR_Gameplay.SCREEN_HEIGHT;
 	}
 	
 	void Update() {
 		if (state == TombState.FALL) {
 			velocity -= GRAVITY * Time.deltaTime;
-			float y = transform.position.y - velocity * Time.deltaTime;
+			float y = transform.localPosition.y - velocity * Time.deltaTime;
 			if (y <= endY) {
 				y = endY;
 				animator.SetTrigger("bounce");
 				state = TombState.STAY;
 			}
 			float z = y;
-			transform.position = new Vector3(transform.position.x, y, z);
+			transform.localPosition = new Vector3(transform.localPosition.x, y, z);
 		}
 	}
 }

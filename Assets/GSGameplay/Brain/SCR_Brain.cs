@@ -44,4 +44,8 @@ public class SCR_Brain : MonoBehaviour {
 		
 		Destroy(gameObject);
 	}
+	
+	public void OnDisable() {
+		Destroy(gameObject);
+	}
 }

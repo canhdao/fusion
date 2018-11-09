@@ -229,7 +229,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		float z = y;
 		
 		GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
-		tomb.transform.position = new Vector3(x, y, z);
+		tomb.transform.localPosition = new Vector3(x, y, z);
 
 		numberUnits[0]++;
 	}

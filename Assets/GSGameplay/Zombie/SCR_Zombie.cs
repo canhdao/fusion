@@ -47,15 +47,15 @@ public class SCR_Zombie : MonoBehaviour {
 	public void Move() {
 		if (!SCR_Gameplay.instance.showingTutorial) {
 			if (state == ZombieState.AUTO_MOVE) {
-				float x = transform.position.x + Random.Range(-MOVE_RANGE, MOVE_RANGE);
-				float y = transform.position.y + Random.Range(-MOVE_RANGE, MOVE_RANGE);
+				float x = transform.localPosition.x + Random.Range(-MOVE_RANGE, MOVE_RANGE);
+				float y = transform.localPosition.y + Random.Range(-MOVE_RANGE, MOVE_RANGE);
 				
 				x = Mathf.Clamp(x, SCR_Gameplay.GARDEN_LEFT, SCR_Gameplay.GARDEN_RIGHT);
 				y = Mathf.Clamp(y, SCR_Gameplay.GARDEN_BOTTOM, SCR_Gameplay.GARDEN_TOP);
 				
 				float z = y;
 				
-				iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "z", z, "time", 0.75f, "easetype", "easeInOutSine"));
+				iTween.MoveTo(gameObject, iTween.Hash("x", x, "y", y, "z", z, "time", 0.75f, "easetype", "easeInOutSine", "islocal", true));
 			}
 		}
 	}
@@ -65,10 +65,11 @@ public class SCR_Zombie : MonoBehaviour {
 	}
 	
 	public void SpawnBrain() {
-		float x = transform.position.x + BRAIN_OFFSET_X;
-		float y = transform.position.y + BRAIN_OFFSET_Y;
+		float x = transform.localPosition.x + BRAIN_OFFSET_X;
+		float y = transform.localPosition.y + BRAIN_OFFSET_Y;
 		float z = y;
-		Vector3 position = new Vector3(x, y, z);
-		Instantiate(SCR_Gameplay.instance.PFB_BRAIN, position, SCR_Gameplay.instance.PFB_BRAIN.transform.rotation);
+		
+		GameObject brain = Instantiate(SCR_Gameplay.instance.PFB_BRAIN, transform.parent);
+		brain.transform.localPosition = new Vector3(x, y, z);
 	}
 }
