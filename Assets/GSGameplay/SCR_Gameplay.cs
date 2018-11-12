@@ -101,6 +101,11 @@ public class SCR_Gameplay : MonoBehaviour {
 		GARDEN_BOTTOM = GARDEN_Y - GARDEN_HEIGHT * 0.5f;
 		
 		SCR_Profile.Load();
+		
+		if (!SCR_Profile.finishedTutorial) {
+			SCR_Profile.Reset();
+		}
+		
 		txtBrain.text = SCR_Profile.brain.ToString();
 		
 		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
