@@ -74,8 +74,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	private bool switchingMap = false;
 
 	private TutorialPhase tutorialPhase = TutorialPhase.OPEN_TOMB;
-	private Vector3 tutorialZombiePosition1 = Vector3.zero;
-	private Vector3 tutorialZombiePosition2 = Vector3.zero;
+	private Transform tutorialZombie1 = null;
+	private Transform tutorialZombie2 = null;
 	
 	private SCR_ZombieShop scrZombieShop = null;
 	
@@ -139,75 +139,79 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update() {
-		if (Input.GetMouseButtonDown(0)) {
-			Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			RaycastHit2D bestHit = FindBestHit(pos);
-			if (bestHit.transform != null) {
-				if (bestHit.transform.parent != null) {
-					SCR_Tomb scrTomb = bestHit.transform.parent.GetComponent<SCR_Tomb>();
-					if (scrTomb != null) {
-						GameObject zombie = SpawnZombie(0);	// numberUnits[0]++ in SpawnZombie(0)
-						
-						numberUnits[0]--;
-						
-						SCR_Profile.numberZombies[0]++;
-						SCR_Profile.SaveNumberZombies();
-						
-						SCR_Profile.numberTombs--;
-						SCR_Profile.SaveNumberTombs();
-						
-						zombie.transform.position = bestHit.transform.parent.position;
-						Destroy(bestHit.transform.parent.gameObject);
-
-						if (showingTutorial) {
-							if (tutorialPhase == TutorialPhase.OPEN_TOMB) {
-								tutorialZombiePosition1 = zombie.transform.position;
-								ShowTutorial(TutorialPhase.OPEN_ZOMBIE_SHOP);
-							}
-						}
-					}
-				}
-				
-				SCR_Zombie scrZombie = bestHit.transform.GetComponent<SCR_Zombie>();
-				if (scrZombie != null) {
-					selectedZombie = bestHit.transform;
-					offsetX = selectedZombie.position.x - pos.x;
-					offsetY = selectedZombie.position.y - pos.y;
-					selectedZombie.GetComponent<Collider2D>().enabled = false;
-					
-					scrZombie.StopMoving();
-					scrZombie.state = ZombieState.USER_MOVE;
-				}
-			}
-		}
-		
-		if (Input.GetMouseButton(0)) {
-			if (selectedZombie != null) {
-				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				float x = Mathf.Clamp(pos.x + offsetX, GARDEN_LEFT, GARDEN_RIGHT);
-				float y = Mathf.Clamp(pos.y + offsetY, GARDEN_BOTTOM, GARDEN_TOP);
-				float z = y;
-				selectedZombie.position = new Vector3(x, y, z);
-			}
-		}
-		
-		if (Input.GetMouseButtonUp(0)) {
-			if (selectedZombie != null) {
+		if (!cvsDiscover.activeSelf) {
+			if (Input.GetMouseButtonDown(0)) {
 				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				RaycastHit2D bestHit = FindBestHit(pos);
 				if (bestHit.transform != null) {
-					SCR_Zombie scrZombie = bestHit.transform.GetComponent<SCR_Zombie>();
-					if (scrZombie != null) {
-						if (selectedZombie.GetComponent<SCR_Zombie>().type == scrZombie.type && scrZombie.type != SCR_Zombie.LAST_TYPE) {
-							FuseZombie(selectedZombie.gameObject, scrZombie.gameObject);
+					if (bestHit.transform.parent != null) {
+						SCR_Tomb scrTomb = bestHit.transform.parent.GetComponent<SCR_Tomb>();
+						if (scrTomb != null) {
+							GameObject zombie = SpawnZombie(0);	// numberUnits[0]++ in SpawnZombie(0)
+							
+							numberUnits[0]--;
+							
+							SCR_Profile.numberZombies[0]++;
+							SCR_Profile.SaveNumberZombies();
+							
+							SCR_Profile.numberTombs--;
+							SCR_Profile.SaveNumberTombs();
+							
+							zombie.transform.position = bestHit.transform.parent.position;
+							Destroy(bestHit.transform.parent.gameObject);
+
+							if (showingTutorial) {
+								if (tutorialPhase == TutorialPhase.OPEN_TOMB) {
+									tutorialZombie1 = zombie.transform;
+									ShowTutorial(TutorialPhase.OPEN_ZOMBIE_SHOP);
+								}
+							}
+						}
+					}
+					
+					if (!showingTutorial || tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
+						SCR_Zombie scrZombie = bestHit.transform.GetComponent<SCR_Zombie>();
+						if (scrZombie != null) {
+							selectedZombie = bestHit.transform;
+							offsetX = selectedZombie.position.x - pos.x;
+							offsetY = selectedZombie.position.y - pos.y;
+							selectedZombie.GetComponent<Collider2D>().enabled = false;
+							
+							scrZombie.StopMoving();
+							scrZombie.state = ZombieState.USER_MOVE;
 						}
 					}
 				}
-				
-				selectedZombie.GetComponent<SCR_Zombie>().state = ZombieState.AUTO_MOVE;
-				
-				selectedZombie.GetComponent<Collider2D>().enabled = true;
-				selectedZombie = null;
+			}
+			
+			if (Input.GetMouseButton(0)) {
+				if (selectedZombie != null) {
+					Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+					float x = Mathf.Clamp(pos.x + offsetX, GARDEN_LEFT, GARDEN_RIGHT);
+					float y = Mathf.Clamp(pos.y + offsetY, GARDEN_BOTTOM, GARDEN_TOP);
+					float z = y;
+					selectedZombie.position = new Vector3(x, y, z);
+				}
+			}
+			
+			if (Input.GetMouseButtonUp(0)) {
+				if (selectedZombie != null) {
+					Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+					RaycastHit2D bestHit = FindBestHit(pos);
+					if (bestHit.transform != null) {
+						SCR_Zombie scrZombie = bestHit.transform.GetComponent<SCR_Zombie>();
+						if (scrZombie != null) {
+							if (selectedZombie.GetComponent<SCR_Zombie>().type == scrZombie.type && scrZombie.type != SCR_Zombie.LAST_TYPE) {
+								FuseZombie(selectedZombie.gameObject, scrZombie.gameObject);
+							}
+						}
+					}
+					
+					selectedZombie.GetComponent<SCR_Zombie>().state = ZombieState.AUTO_MOVE;
+					
+					selectedZombie.GetComponent<Collider2D>().enabled = true;
+					selectedZombie = null;
+				}
 			}
 		}
 
@@ -330,16 +334,18 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void SwitchMap(int map) {
-		if (!switchingMap && map != currentMap) {
-			switchingMap = true;
-			nextMap = map;
-			
-			if (currentMap < map) {
-				DisappearShrinkMap(currentMap);
-			}
+		if (!showingTutorial && !cvsDiscover.activeSelf) {
+			if (!switchingMap && map != currentMap) {
+				switchingMap = true;
+				nextMap = map;
+				
+				if (currentMap < map) {
+					DisappearShrinkMap(currentMap);
+				}
 
-			if (currentMap > map) {
-				DisappearEnlargeMap(currentMap);
+				if (currentMap > map) {
+					DisappearEnlargeMap(currentMap);
+				}
 			}
 		}
 	}
@@ -380,28 +386,38 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void OpenZombieShop() {
-		zombieShop.SetActive(true);
-		
-		if (showingTutorial) {
-			if (tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
-				ShowTutorial(TutorialPhase.BUY_ZOMBIE);
+		if (!showingTutorial || tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
+			if (!cvsDiscover.activeSelf) {
+				zombieShop.SetActive(true);
+				
+				if (showingTutorial) {
+					if (tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
+						zombieShop.GetComponent<ScrollRect>().vertical = false;
+						ShowTutorial(TutorialPhase.BUY_ZOMBIE);
+					}
+				}
 			}
 		}
 	}
 
 	public void CloseZombieShop() {
-		zombieShop.SetActive(false);
-		
-		if (showingTutorial) {
-			if (tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
-				ShowTutorial(TutorialPhase.EVOLVE_ZOMBIE);
+		if (!showingTutorial || tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
+			zombieShop.SetActive(false);
+			
+			if (showingTutorial) {
+				if (tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
+					zombieShop.GetComponent<ScrollRect>().vertical = true;
+					ShowTutorial(TutorialPhase.EVOLVE_ZOMBIE);
+				}
 			}
 		}
 	}
 
 	public void OpenUpgrade() {
-		cvsGameplay.SetActive(false);
-		cvsUpgrade.SetActive(true);
+		if (!showingTutorial && !cvsDiscover.activeSelf) {
+			cvsGameplay.SetActive(false);
+			cvsUpgrade.SetActive(true);
+		}
 	}
 
 	public void CloseUpgrade() {
@@ -410,8 +426,10 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void OpenCollection() {
-		cvsGameplay.SetActive(false);
-		cvsCollection.SetActive(true);
+		if (!showingTutorial && !cvsDiscover.activeSelf) {
+			cvsGameplay.SetActive(false);
+			cvsCollection.SetActive(true);
+		}
 	}
 
 	public void CloseCollection() {
@@ -420,26 +438,28 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void BuyZombie(int index) {
-		int map = GetMapFromZombieIndex(index);
+		if (!showingTutorial || tutorialPhase == TutorialPhase.BUY_ZOMBIE) {
+			int map = GetMapFromZombieIndex(index);
 
-		if (numberUnits[map] < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
-			GameObject zombie = SpawnZombie(index);
-			SCR_Profile.numberZombies[index]++;
-			SCR_Profile.SaveNumberZombies();
+			if (numberUnits[map] < SCR_Config.MAX_NUMBER_ZOMBIES && SCR_Profile.brain >= SCR_Config.ZOMBIE_INFO[index].price) {
+				GameObject zombie = SpawnZombie(index);
+				SCR_Profile.numberZombies[index]++;
+				SCR_Profile.SaveNumberZombies();
 
-			DecreaseBrain(SCR_Config.ZOMBIE_INFO[index].price);
-			
-			if (showingTutorial) {
-				if (tutorialPhase == TutorialPhase.BUY_ZOMBIE) {
-					if (index == 0) {
-						tutorialZombiePosition2 = zombie.transform.position;
-						ShowTutorial(TutorialPhase.CLOSE_ZOMBIE_SHOP);
+				DecreaseBrain(SCR_Config.ZOMBIE_INFO[index].price);
+				
+				if (showingTutorial) {
+					if (tutorialPhase == TutorialPhase.BUY_ZOMBIE) {
+						if (index == 0) {
+							tutorialZombie2 = zombie.transform;
+							ShowTutorial(TutorialPhase.CLOSE_ZOMBIE_SHOP);
+						}
 					}
 				}
 			}
-		}
-		else {
-			// Show reason cannot buy
+			else {
+				// Show reason cannot buy
+			}
 		}
 	}
 	
@@ -507,13 +527,15 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 	
 	public void UpdateHandPosition(float t) {
-		float x = (tutorialZombiePosition2.x - tutorialZombiePosition1.x) * t + tutorialZombiePosition1.x;
-		float y = (tutorialZombiePosition2.y - tutorialZombiePosition1.y) * t + tutorialZombiePosition1.y;
-		
-		x = x * 100 + HAND_ZOMBIE_OFFSET_X;
-		y = y * 100 + HAND_ZOMBIE_OFFSET_Y;
-		
-		hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
+		if (tutorialZombie1 != null && tutorialZombie2 != null) {
+			float x = (tutorialZombie2.position.x - tutorialZombie1.position.x) * t + tutorialZombie1.position.x;
+			float y = (tutorialZombie2.position.y - tutorialZombie1.position.y) * t + tutorialZombie1.position.y;
+			
+			x = x * 100 + HAND_ZOMBIE_OFFSET_X;
+			y = y * 100 + HAND_ZOMBIE_OFFSET_Y;
+			
+			hand.GetComponent<RectTransform>().anchoredPosition = new Vector2(x, y);
+		}
 	}
 	
 	public Vector2 GetHandPositionFromRT(RectTransform rt) {
