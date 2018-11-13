@@ -37,4 +37,7 @@ public class SCR_Config {
 		new ZombieInfo("G-005",    "Show the power of the Almighty ", 1.4f, 14),
 		new ZombieInfo("GH-002",   "Bring the power of an ancient God. ", 1.5f, 15),
 	};
+	
+	public const float TOMB_SPAWN_INTERVAL = 10.0f;
+	public const float DISCOVER_DISPLAY_TIME = 2;
 }

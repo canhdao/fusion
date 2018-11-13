@@ -12,8 +12,6 @@ public enum TutorialPhase {
 }
 
 public class SCR_Gameplay : MonoBehaviour {
-	public const float TOMB_SPAWN_INTERVAL = 3.0f;
-	
 	public const float HAND_TOMB_OFFSET_X = 50.0f;
 	public const float HAND_TOMB_OFFSET_Y = -40;
 	
@@ -62,7 +60,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public bool showingTutorial = true;
 	
-	private float tombSpawnTime = TOMB_SPAWN_INTERVAL;
+	private float tombSpawnTime = SCR_Config.TOMB_SPAWN_INTERVAL;
 	
 	private Transform selectedZombie = null;
 	private float offsetX = 0;
@@ -78,6 +76,9 @@ public class SCR_Gameplay : MonoBehaviour {
 	private Transform tutorialZombie2 = null;
 	
 	private SCR_ZombieShop scrZombieShop = null;
+	
+	[System.NonSerialized] public bool pendingDiscover = false;
+	[System.NonSerialized] public int pendingIndex = 0;
 	
 	void Awake() {
 		instance = this;
@@ -222,7 +223,7 @@ public class SCR_Gameplay : MonoBehaviour {
 
 		if (!showingTutorial) {
 			tombSpawnTime += Time.deltaTime;
-			if (tombSpawnTime >= TOMB_SPAWN_INTERVAL && numberUnits[0] < SCR_Config.MAX_NUMBER_ZOMBIES) {
+			if (tombSpawnTime >= SCR_Config.TOMB_SPAWN_INTERVAL && numberUnits[0] < SCR_Config.MAX_NUMBER_ZOMBIES) {
 				SpawnTomb();
 				tombSpawnTime = 0;
 				
@@ -292,11 +293,16 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
 		
-		//if (map != originalMap) {
+		if (map != originalMap) {
 			GameObject movedZombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[originalMap].transform);
 			movedZombie.transform.position = new Vector3(0, -movedZombie.GetComponent<BoxCollider2D>().offset.y, 0);
 			movedZombie.GetComponent<SCR_Zombie>().SwitchMapEffect();
-		//}
+			
+			if (zombieIndex > SCR_Profile.zombieUnlocked) {
+				pendingDiscover = true;
+				pendingIndex = zombieIndex;
+			}
+		}
 		
 		GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map].transform);
 		zombie.transform.position = position;
@@ -322,8 +328,10 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 		
 		if (zombieIndex > SCR_Profile.zombieUnlocked) {
-			cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(zombieIndex);
-			cvsDiscover.SetActive(true);
+			if (!pendingDiscover) {
+				cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(zombieIndex);
+				cvsDiscover.SetActive(true);
+			}
 			
 			SCR_Profile.zombieUnlocked = zombieIndex;
 			SCR_Profile.SaveZombieUnlocked();
@@ -394,6 +402,12 @@ public class SCR_Gameplay : MonoBehaviour {
 	public void CompleteSwitchMap() {
 		currentMap = nextMap;
 		switchingMap = false;
+		
+		if (pendingDiscover) {
+			cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(pendingIndex);
+			cvsDiscover.SetActive(true);
+			pendingDiscover = false;
+		}
 	}
 
 	public void OpenZombieShop() {
@@ -474,7 +488,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 	}
 	
-	public int GetMapFromZombieIndex(int zombieIndex) {
+	public static int GetMapFromZombieIndex(int zombieIndex) {
 		int map = 0;
 		
 		if (zombieIndex <= 4) {

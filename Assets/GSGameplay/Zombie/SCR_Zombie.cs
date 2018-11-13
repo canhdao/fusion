@@ -83,6 +83,10 @@ public class SCR_Zombie : MonoBehaviour {
 	}
 	
 	public void OnCompleteScaleSwitchMap() {
+		if (SCR_Gameplay.instance.pendingDiscover) {
+			SCR_Gameplay.instance.SwitchMap(SCR_Gameplay.GetMapFromZombieIndex(SCR_Gameplay.instance.pendingIndex));
+		}
+		
 		Destroy(gameObject);
 	}
 }

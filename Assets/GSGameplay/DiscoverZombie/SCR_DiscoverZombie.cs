@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SCR_DiscoverZombie : MonoBehaviour {
-	public const float DISPLAY_TIME = 3;
-	
 	public GameObject[] zombies;
 	
 	private float displayTime = 0;
@@ -15,7 +13,7 @@ public class SCR_DiscoverZombie : MonoBehaviour {
 	
 	public void Update() {
 		displayTime += Time.deltaTime;
-		if (displayTime >= DISPLAY_TIME) {
+		if (displayTime >= SCR_Config.DISCOVER_DISPLAY_TIME) {
 			gameObject.SetActive(false);
 		}
 	}
