@@ -72,4 +72,17 @@ public class SCR_Zombie : MonoBehaviour {
 		GameObject brain = Instantiate(SCR_Gameplay.instance.PFB_BRAIN, transform.parent);
 		brain.transform.localPosition = new Vector3(x, y, z);
 	}
+	
+	public void SwitchMapEffect() {
+		const float FINAL_SCALE = 20;
+		
+		GetComponent<Animator>().enabled = false;
+		iTween.ScaleTo(gameObject, iTween.Hash("x", FINAL_SCALE, "y", FINAL_SCALE, "time", 1.0f));
+		iTween.MoveTo(gameObject, iTween.Hash("y", transform.position.y * FINAL_SCALE, "time", 1.0f));
+		iTween.FadeTo(gameObject, iTween.Hash("alpha", 0, "time", 1.0f, "oncomplete", "OnCompleteScaleSwitchMap"));
+	}
+	
+	public void OnCompleteScaleSwitchMap() {
+		Destroy(gameObject);
+	}
 }

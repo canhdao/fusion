@@ -292,6 +292,12 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
 		
+		//if (map != originalMap) {
+			GameObject movedZombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[originalMap].transform);
+			movedZombie.transform.position = new Vector3(0, -movedZombie.GetComponent<BoxCollider2D>().offset.y, 0);
+			movedZombie.GetComponent<SCR_Zombie>().SwitchMapEffect();
+		//}
+		
 		GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map].transform);
 		zombie.transform.position = position;
 		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
