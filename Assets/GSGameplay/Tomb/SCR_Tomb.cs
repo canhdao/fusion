@@ -21,7 +21,9 @@ public class SCR_Tomb : MonoBehaviour {
 		animator = GetComponent<Animator>();
 		animator.keepAnimatorControllerStateOnDisable = true;
 	
-		endY = transform.localPosition.y - SCR_Gameplay.SCREEN_HEIGHT;
+		endY = transform.localPosition.y;
+		float y = transform.localPosition.y + Random.Range(SCR_Gameplay.SCREEN_HEIGHT, SCR_Gameplay.SCREEN_HEIGHT * 2);
+		transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
 	}
 	
 	void Update() {

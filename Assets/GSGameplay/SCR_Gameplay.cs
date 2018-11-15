@@ -235,7 +235,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public void SpawnTomb() {
 		float x = Random.Range(GARDEN_LEFT, GARDEN_RIGHT);
-		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP) + SCREEN_HEIGHT;
+		float y = Random.Range(GARDEN_BOTTOM, GARDEN_TOP);
 		float z = y;
 		
 		GameObject tomb = Instantiate(PFB_TOMB, backgrounds[0].transform);
