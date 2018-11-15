@@ -39,5 +39,5 @@ public class SCR_Config {
 	};
 	
 	public const float TOMB_SPAWN_INTERVAL = 10.0f;
-	public const float DISCOVER_DISPLAY_TIME = 2;
+	public const float DISCOVER_DISPLAY_TIME = 2.5f;
 }

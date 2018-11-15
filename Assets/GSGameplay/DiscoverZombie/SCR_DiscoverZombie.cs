@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SCR_DiscoverZombie : MonoBehaviour {
 	public GameObject[] zombies;
 	
+	private Text txtName;
+	
 	private float displayTime = 0;
 	
-	public void Start() {
-		
+	public void Awake() {
+		txtName = transform.Find("TXT_Name").GetComponent<Text>();
 	}
 	
 	public void Update() {
@@ -26,5 +29,6 @@ public class SCR_DiscoverZombie : MonoBehaviour {
 		}
 		
 		zombies[index].SetActive(true);
+		txtName.text = SCR_Config.ZOMBIE_INFO[index].name;
 	}
 }
