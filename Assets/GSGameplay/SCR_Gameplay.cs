@@ -53,6 +53,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject btnZombieShop;
 	public GameObject btnBuyZombie1;
 	public GameObject btnCloseZombieShop;
+	public GameObject grpAreaIsFull;
 	
 	public Text txtBrain;
 
@@ -124,6 +125,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		for (int i = 1; i < backgrounds.Length; i++) {
 			backgrounds[i].SetActive(false);
 		}
+		
+		grpAreaIsFull.SetActive(false);
 		
 		zombieShop.SetActive(false);
 
@@ -291,52 +294,58 @@ public class SCR_Gameplay : MonoBehaviour {
 		int originalMap = GetMapFromZombieIndex(originalIndex);		
 		int map = GetMapFromZombieIndex(zombieIndex);
 		
-		Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
-		
-		if (map != originalMap) {
-			GameObject movedZombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[originalMap].transform);
-			movedZombie.transform.position = new Vector3(0, -movedZombie.GetComponent<BoxCollider2D>().offset.y, 0);
-			movedZombie.GetComponent<SCR_Zombie>().SwitchMapEffect();
+		if (map == originalMap || numberUnits[map] < SCR_Config.MAX_NUMBER_ZOMBIES) {
+			Vector3 position = (zombie1.transform.position + zombie2.transform.position) * 0.5f;
+			
+			if (map != originalMap) {
+				GameObject movedZombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[originalMap].transform);
+				movedZombie.transform.position = new Vector3(0, -movedZombie.GetComponent<BoxCollider2D>().offset.y, 0);
+				movedZombie.GetComponent<SCR_Zombie>().SwitchMapEffect();
+				
+				if (zombieIndex > SCR_Profile.zombieUnlocked) {
+					pendingDiscover = true;
+					pendingIndex = zombieIndex;
+				}
+			}
+			
+			GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map].transform);
+			zombie.transform.position = position;
+			Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
+			
+			Destroy(zombie1);
+			Destroy(zombie2);
+
+			numberUnits[map]++;
+			numberUnits[originalMap] -= 2;
+			
+			SCR_Profile.numberZombies[zombieIndex]++;
+			SCR_Profile.numberZombies[originalIndex] -= 2;
+			SCR_Profile.SaveNumberZombies();
+			
+			if (showingTutorial) {
+				if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
+					hand.SetActive(false);
+					showingTutorial = false;
+					SCR_Profile.finishedTutorial = true;
+					SCR_Profile.SaveTutorial();
+				}
+			}
 			
 			if (zombieIndex > SCR_Profile.zombieUnlocked) {
-				pendingDiscover = true;
-				pendingIndex = zombieIndex;
+				if (!pendingDiscover) {
+					cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(zombieIndex);
+					cvsDiscover.SetActive(true);
+				}
+				
+				SCR_Profile.zombieUnlocked = zombieIndex;
+				SCR_Profile.SaveZombieUnlocked();
+				
+				scrZombieShop.Refresh();
 			}
 		}
-		
-		GameObject zombie = Instantiate(PFB_ZOMBIES[zombieIndex], backgrounds[map].transform);
-		zombie.transform.position = position;
-		Instantiate(PFB_FUSE_EFFECT, position, PFB_FUSE_EFFECT.transform.rotation);
-		
-		Destroy(zombie1);
-		Destroy(zombie2);
-
-		numberUnits[map]++;
-		numberUnits[originalMap] -= 2;
-		
-		SCR_Profile.numberZombies[zombieIndex]++;
-		SCR_Profile.numberZombies[originalIndex] -= 2;
-		SCR_Profile.SaveNumberZombies();
-		
-		if (showingTutorial) {
-			if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
-				hand.SetActive(false);
-				showingTutorial = false;
-				SCR_Profile.finishedTutorial = true;
-				SCR_Profile.SaveTutorial();
-			}
-		}
-		
-		if (zombieIndex > SCR_Profile.zombieUnlocked) {
-			if (!pendingDiscover) {
-				cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(zombieIndex);
-				cvsDiscover.SetActive(true);
-			}
-			
-			SCR_Profile.zombieUnlocked = zombieIndex;
-			SCR_Profile.SaveZombieUnlocked();
-			
-			scrZombieShop.Refresh();
+		else {
+			grpAreaIsFull.GetComponent<SCR_AreaIsFull>().txtFull.text = "NEXT AREA IS FULL!";
+			grpAreaIsFull.SetActive(true);
 		}
 	}
 	
@@ -483,7 +492,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				}
 			}
 			else {
-				// Show reason cannot buy
+				grpAreaIsFull.GetComponent<SCR_AreaIsFull>().txtFull.text = "AREA IS FULL!";
+				grpAreaIsFull.SetActive(true);
 			}
 		}
 	}

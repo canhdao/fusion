@@ -6,13 +6,9 @@ using UnityEngine.UI;
 public class SCR_DiscoverZombie : MonoBehaviour {
 	public GameObject[] zombies;
 	
-	private Text txtName;
+	public Text txtName;
 	
 	private float displayTime = 0;
-	
-	public void Awake() {
-		txtName = transform.Find("TXT_Name").GetComponent<Text>();
-	}
 	
 	public void Update() {
 		displayTime += Time.deltaTime;
