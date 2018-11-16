@@ -24,13 +24,13 @@ public class SCR_Collection : MonoBehaviour {
 	
 	public void OnArrowLeft() {
 		currentZombie--;
-		if (currentZombie < 0) currentZombie = zombies.Length - 1;
+		if (currentZombie < 0) currentZombie = SCR_Profile.zombieUnlocked;
 		UpdateZombie();
 	}
 	
 	public void OnArrowRight() {
 		currentZombie++;
-		if (currentZombie >= zombies.Length) currentZombie = 0;
+		if (currentZombie > SCR_Profile.zombieUnlocked) currentZombie = 0;
 		UpdateZombie();
 	}
 	

@@ -148,7 +148,10 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update() {
-		if (!cvsDiscover.activeSelf) {
+		if (!cvsDiscover.activeSelf
+		&&  !cvsUpgrade.activeSelf
+		&&  !cvsCollection.activeSelf
+		&&  !scrZombieShop.gameObject.activeSelf) {
 			if (Input.GetMouseButtonDown(0)) {
 				Vector3 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 				RaycastHit2D bestHit = FindBestHit(pos);
