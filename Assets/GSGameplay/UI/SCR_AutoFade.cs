@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SCR_AreaIsFull : MonoBehaviour {
+public class SCR_AutoFade : MonoBehaviour {
 	public Image imgDarken;
-	public Text txtFull;
-	public Text txtMerge;
+	public Text txtTitle;
+	public Text txtContent;
 	
 	private float darkenAlpha = 0;
 	
@@ -22,8 +22,8 @@ public class SCR_AreaIsFull : MonoBehaviour {
 	
 	public void UpdateAlpha(float alpha) {
 		imgDarken.color = new Color(imgDarken.color.r, imgDarken.color.g, imgDarken.color.b, alpha * darkenAlpha);
-		txtFull.color = new Color(txtFull.color.r, txtFull.color.g, txtFull.color.b, alpha);
-		txtMerge.color = new Color(txtMerge.color.r, txtMerge.color.g, txtMerge.color.b, alpha);
+		txtTitle.color = new Color(txtTitle.color.r, txtTitle.color.g, txtTitle.color.b, alpha);
+		txtContent.color = new Color(txtContent.color.r, txtContent.color.g, txtContent.color.b, alpha);
 	}
 	
 	public void AutoDeactivate() {

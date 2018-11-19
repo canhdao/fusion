@@ -54,6 +54,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject btnBuyZombie1;
 	public GameObject btnCloseZombieShop;
 	public GameObject grpAreaIsFull;
+	public GameObject grpPerfect;
 	
 	public Text txtBrain;
 
@@ -127,6 +128,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 		
 		grpAreaIsFull.SetActive(false);
+		grpPerfect.SetActive(false);
 		
 		zombieShop.SetActive(false);
 
@@ -213,8 +215,13 @@ public class SCR_Gameplay : MonoBehaviour {
 					if (bestHit.transform != null) {
 						SCR_Zombie scrZombie = bestHit.transform.GetComponent<SCR_Zombie>();
 						if (scrZombie != null) {
-							if (selectedZombie.GetComponent<SCR_Zombie>().type == scrZombie.type && scrZombie.type != SCR_Zombie.LAST_TYPE) {
-								FuseZombie(selectedZombie.gameObject, scrZombie.gameObject);
+							if (selectedZombie.GetComponent<SCR_Zombie>().type == scrZombie.type) {
+								if (scrZombie.type != SCR_Zombie.LAST_TYPE) {
+									FuseZombie(selectedZombie.gameObject, scrZombie.gameObject);
+								}
+								else {
+									grpPerfect.SetActive(true);
+								}
 							}
 						}
 					}
@@ -347,7 +354,7 @@ public class SCR_Gameplay : MonoBehaviour {
 			}
 		}
 		else {
-			grpAreaIsFull.GetComponent<SCR_AreaIsFull>().txtFull.text = "NEXT AREA IS FULL!";
+			grpAreaIsFull.GetComponent<SCR_AutoFade>().txtTitle.text = "NEXT AREA IS FULL!";
 			grpAreaIsFull.SetActive(true);
 		}
 	}
@@ -495,7 +502,7 @@ public class SCR_Gameplay : MonoBehaviour {
 				}
 			}
 			else {
-				grpAreaIsFull.GetComponent<SCR_AreaIsFull>().txtFull.text = "AREA IS FULL!";
+				grpAreaIsFull.GetComponent<SCR_AutoFade>().txtTitle.text = "AREA IS FULL!";
 				grpAreaIsFull.SetActive(true);
 			}
 		}
