@@ -57,7 +57,16 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject grpPerfect;
 	
 	public Text txtBrain;
-
+	
+	public AudioSource	source;
+	
+	public AudioClip	sndButton;
+	public AudioClip	sndBuyZombie;
+	public AudioClip	sndDiscover;
+	public AudioClip	sndEvolve;
+	public AudioClip	sndSwitchMap;
+	public AudioClip	sndTapTomb;
+	
 	private int[] numberUnits = new int[3];
 	
 	public bool showingTutorial = true;
@@ -73,7 +82,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	private bool switchingMap = false;
 
-	private TutorialPhase tutorialPhase = TutorialPhase.OPEN_TOMB;
+	[System.NonSerialized] public TutorialPhase tutorialPhase = TutorialPhase.OPEN_TOMB;
 	private Transform tutorialZombie1 = null;
 	private Transform tutorialZombie2 = null;
 	
@@ -180,6 +189,8 @@ public class SCR_Gameplay : MonoBehaviour {
 									ShowTutorial(TutorialPhase.OPEN_ZOMBIE_SHOP);
 								}
 							}
+							
+							source.PlayOneShot(sndTapTomb);
 						}
 					}
 					
@@ -345,6 +356,7 @@ public class SCR_Gameplay : MonoBehaviour {
 				if (!pendingDiscover) {
 					cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(zombieIndex);
 					cvsDiscover.SetActive(true);
+					source.PlayOneShot(sndDiscover);
 				}
 				
 				SCR_Profile.zombieUnlocked = zombieIndex;
@@ -352,6 +364,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				
 				scrZombieShop.Refresh();
 			}
+			
+			source.PlayOneShot(sndEvolve);
 		}
 		else {
 			grpAreaIsFull.GetComponent<SCR_AutoFade>().txtTitle.text = "NEXT AREA IS FULL!";
@@ -372,19 +386,22 @@ public class SCR_Gameplay : MonoBehaviour {
 	}
 
 	public void SwitchMap(int map) {
-		if (!showingTutorial && !cvsDiscover.activeSelf) {
-			if (!switchingMap && map != currentMap) {
-				switchingMap = true;
-				nextMap = map;
-				
-				if (currentMap < map) {
-					DisappearShrinkMap(currentMap);
-				}
-
-				if (currentMap > map) {
-					DisappearEnlargeMap(currentMap);
-				}
+		if (!showingTutorial && !cvsDiscover.activeSelf && !switchingMap && map != currentMap) {
+			source.PlayOneShot(sndSwitchMap);
+			
+			switchingMap = true;
+			nextMap = map;
+			
+			if (currentMap < map) {
+				DisappearShrinkMap(currentMap);
 			}
+
+			if (currentMap > map) {
+				DisappearEnlargeMap(currentMap);
+			}
+		}
+		else {
+			source.PlayOneShot(sndButton);
 		}
 	}
 
@@ -426,6 +443,7 @@ public class SCR_Gameplay : MonoBehaviour {
 			cvsDiscover.GetComponent<SCR_DiscoverZombie>().ShowNewZombie(pendingIndex);
 			cvsDiscover.SetActive(true);
 			pendingDiscover = false;
+			source.PlayOneShot(sndDiscover);
 		}
 	}
 
@@ -500,10 +518,14 @@ public class SCR_Gameplay : MonoBehaviour {
 						}
 					}
 				}
+				
+				source.PlayOneShot(sndBuyZombie);
 			}
 			else {
 				grpAreaIsFull.GetComponent<SCR_AutoFade>().txtTitle.text = "AREA IS FULL!";
 				grpAreaIsFull.SetActive(true);
+				
+				source.PlayOneShot(sndButton);
 			}
 		}
 	}

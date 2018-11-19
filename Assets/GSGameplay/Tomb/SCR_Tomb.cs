@@ -20,10 +20,12 @@ public class SCR_Tomb : MonoBehaviour {
 	void Start() {
 		animator = GetComponent<Animator>();
 		animator.keepAnimatorControllerStateOnDisable = true;
-	
-		endY = transform.localPosition.y;
-		float y = transform.localPosition.y + Random.Range(SCR_Gameplay.SCREEN_HEIGHT, SCR_Gameplay.SCREEN_HEIGHT * 2);
-		transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
+		
+		if (!SCR_Gameplay.instance.showingTutorial || SCR_Gameplay.instance.tutorialPhase != TutorialPhase.OPEN_TOMB) {
+			endY = transform.localPosition.y;
+			float y = endY + Random.Range(SCR_Gameplay.SCREEN_HEIGHT, SCR_Gameplay.SCREEN_HEIGHT * 2);
+			transform.localPosition = new Vector3(transform.localPosition.x, y, transform.localPosition.z);
+		}
 	}
 	
 	void Update() {
