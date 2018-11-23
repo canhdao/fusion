@@ -87,6 +87,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	private Transform tutorialZombie2 = null;
 	
 	private SCR_ZombieShop scrZombieShop = null;
+	private SCR_UpgradeShop scrUpgradeShop = null;
 	
 	[System.NonSerialized] public bool pendingDiscover = false;
 	[System.NonSerialized] public int pendingIndex = 0;
@@ -155,6 +156,9 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		scrZombieShop = cvsGameplay.transform.Find("ZombieShop").GetComponent<SCR_ZombieShop>();
 		scrZombieShop.Refresh();
+		
+		scrUpgradeShop = cvsUpgrade.transform.Find("UpgradeShop").GetComponent<SCR_UpgradeShop>();
+		scrUpgradeShop.Refresh();
 	}
 	
 	// Update is called once per frame
@@ -363,6 +367,7 @@ public class SCR_Gameplay : MonoBehaviour {
 				SCR_Profile.SaveZombieUnlocked();
 				
 				scrZombieShop.Refresh();
+				scrUpgradeShop.Refresh();
 			}
 			
 			source.PlayOneShot(sndEvolve);
@@ -528,6 +533,9 @@ public class SCR_Gameplay : MonoBehaviour {
 				source.PlayOneShot(sndButton);
 			}
 		}
+	}
+	
+	public void UpgradeZombie(int index) {
 	}
 	
 	public static int GetMapFromZombieIndex(int zombieIndex) {
