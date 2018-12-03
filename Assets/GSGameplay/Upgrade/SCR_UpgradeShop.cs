@@ -30,19 +30,15 @@ public class SCR_UpgradeShop : MonoBehaviour {
 	}
 	
 	public void RefreshUpgradeInfo() {
-		int total = 0;
-		
 		for (int i = 0; i < zombieUpgradePrices.Length; i++) {
 			int productionRate = SCR_Config.GetProductionRate(i);
 			
 			zombieLevels[i].text = "LEVEL " + (SCR_Profile.upgradeZombies[i] + 1).ToString();
-			zombieProductionRates[i].text = productionRate.ToString() + " brains/s";
+			zombieProductionRates[i].text = SCR_Gameplay.FormatNumber(productionRate) + " brains/s";
 			zombieUpgradePrices[i].text = SCR_Gameplay.FormatNumber(SCR_Config.GetUpgradePrice(i));
-			
-			total += productionRate;
 		}
 		
-		SCR_Gameplay.instance.txtTotalProductionRate.text = SCR_Gameplay.FormatNumber(total) + " brains/s";
+		SCR_Gameplay.instance.UpdateTotalProductionRate();
 	}
 	
 	public void OnUpgradeZombie(int index) {

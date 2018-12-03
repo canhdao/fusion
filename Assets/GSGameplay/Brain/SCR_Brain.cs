@@ -8,16 +8,15 @@ public class SCR_Brain : MonoBehaviour {
 	
 	public GameObject PFB_PLUS_BRAIN;
 	private SpriteRenderer spriteRenderer;
+	private int brainValue;
 	
-	// Use this for initialization
-	void Start() {
+	public void Start() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		iTween.ValueTo(gameObject, iTween.Hash("from", 1, "to", 0, "time", 0.25f, "delay", 0.5f, "onupdate", "UpdateAlpha", "oncomplete", "OnCompleteFadeOut"));
 	}
 	
-	// Update is called once per frame
-	void Update() {
-		
+	public void SetValue(int v) {
+		brainValue = v;
 	}
 	
 	private void UpdateAlpha(float alpha) {
@@ -37,10 +36,8 @@ public class SCR_Brain : MonoBehaviour {
 			float y = transform.position.y / SCR_Gameplay.SCREEN_HEIGHT * canvasRT.rect.height + PLUS_BRAIN_OFFSET_Y;
 			rectTransform.anchoredPosition = new Vector2(x, y);
 			
-			plusBrain.GetComponent<Text>().text = "+" + SCR_Config.PLUS_BRAIN_AMOUNT.ToString();
+			plusBrain.GetComponent<Text>().text = "+" + SCR_Gameplay.FormatNumber(brainValue);
 		}
-		
-		SCR_Gameplay.instance.IncreaseBrain(SCR_Config.PLUS_BRAIN_AMOUNT);
 		
 		Destroy(gameObject);
 	}

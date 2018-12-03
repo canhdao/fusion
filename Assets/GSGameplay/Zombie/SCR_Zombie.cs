@@ -71,6 +71,7 @@ public class SCR_Zombie : MonoBehaviour {
 		
 		GameObject brain = Instantiate(SCR_Gameplay.instance.PFB_BRAIN, transform.parent);
 		brain.transform.localPosition = new Vector3(x, y, z);
+		brain.GetComponent<SCR_Brain>().SetValue(SCR_Config.GetProductionRate((int)type));
 	}
 	
 	public void SwitchMapEffect() {

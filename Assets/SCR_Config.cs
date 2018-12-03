@@ -18,7 +18,6 @@ public struct ZombieInfo {
 
 public class SCR_Config {
 	public const int MAX_NUMBER_ZOMBIES	= 16;
-	public const int PLUS_BRAIN_AMOUNT	= 10;
 
 	public static ZombieInfo[] ZOMBIE_INFO = new ZombieInfo[] {
 		new ZombieInfo("Crawlie", "Hobos Corporation first experience sample in reviving dead people",

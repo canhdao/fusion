@@ -93,6 +93,9 @@ public class SCR_Gameplay : MonoBehaviour {
 	[System.NonSerialized] public bool pendingDiscover = false;
 	[System.NonSerialized] public int pendingIndex = 0;
 	
+	private int totalProductionRate = 0;
+	private float productionTime = 0;
+	
 	void Awake() {
 		instance = this;
 	}
@@ -158,14 +161,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		scrZombieShop = cvsGameplay.transform.Find("ZombieShop").GetComponent<SCR_ZombieShop>();
 		scrUpgradeShop = cvsUpgrade.transform.Find("UpgradeShop").GetComponent<SCR_UpgradeShop>();
 		
-		int total = 0;
-		
-		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
-			int productionRate = SCR_Config.GetProductionRate(i);
-			total += productionRate;
-		}
-		
-		txtTotalProductionRate.text = FormatNumber(total) + " brains/s";
+		UpdateTotalProductionRate();
 	}
 	
 	// Update is called once per frame
@@ -265,7 +261,24 @@ public class SCR_Gameplay : MonoBehaviour {
 				SCR_Profile.numberTombs++;
 				SCR_Profile.SaveNumberTombs();
 			}
+			
+			productionTime += Time.deltaTime;
+			if (productionTime >= 1) {
+				IncreaseBrain(totalProductionRate);
+				productionTime = 0;
+			}
+		}		
+	}
+	
+	public void UpdateTotalProductionRate() {
+		totalProductionRate = 0;
+		
+		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
+			int productionRate = SCR_Config.GetProductionRate(i);
+			totalProductionRate += productionRate;
 		}
+		
+		txtTotalProductionRate.text = FormatNumber(totalProductionRate) + " brains/s";
 	}
 	
 	public void SpawnTomb() {
