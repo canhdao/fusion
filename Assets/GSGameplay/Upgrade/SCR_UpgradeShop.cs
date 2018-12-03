@@ -12,7 +12,7 @@ public class SCR_UpgradeShop : MonoBehaviour {
 
 	public void Start() {
 		for (int i = 0; i < zombieUpgradePrices.Length; i++) {
-			string productionRate = "PRODUCE " + SCR_Config.ZOMBIE_INFO[i].productionRate.ToString() + "/s";
+			string productionRate = "PRODUCE " + SCR_Config.GetProductionRate(i).ToString() + "/s";
 			
 			//zombieNames[i].text = SCR_Config.ZOMBIE_INFO[i].name.ToUpper();
 			zombieProductionRates[i].text = productionRate;

@@ -7,9 +7,10 @@ public class SCR_Profile {
 	
 	public static int brain = 0;
 	public static int[] numberZombies = new int[NUMBER_ZOMBIES];
+	public static int[] upgradeZombies = new int[NUMBER_ZOMBIES];	
 	public static int numberTombs = 0;
-	public static int zombieUnlocked = 0;
 	
+	public static int zombieUnlocked = 0;
 	public static bool finishedTutorial = false;
 	
 	public static void Load() {
@@ -17,6 +18,7 @@ public class SCR_Profile {
 		
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			numberZombies[i] = PlayerPrefs.GetInt("zombie" + i.ToString(), 0);
+			upgradeZombies[i] = PlayerPrefs.GetInt("upgrade" + i.ToString(), 0);
 		}
 		
 		numberTombs = PlayerPrefs.GetInt("tomb", 0);
@@ -30,6 +32,7 @@ public class SCR_Profile {
 		SaveBrain();
 		SaveNumberZombies();
 		SaveNumberTombs();
+		SaveUpgradeZombies();
 		SaveZombieUnlocked();
 		SaveTutorial();
 	}
@@ -39,6 +42,7 @@ public class SCR_Profile {
 		
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			numberZombies[i] = 0;
+			upgradeZombies[i] = 0;
 		}
 		
 		numberTombs = 0;
@@ -54,9 +58,15 @@ public class SCR_Profile {
 		PlayerPrefs.SetInt("brain", brain);
 	}
 	
-	public static void SaveNumberZombies() {		
+	public static void SaveNumberZombies() {
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			PlayerPrefs.SetInt("zombie" + i.ToString(), numberZombies[i]);
+		}
+	}
+	
+	public static void SaveUpgradeZombies() {
+		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
+			PlayerPrefs.SetInt("upgrade" + i.ToString(), upgradeZombies[i]);
 		}
 	}
 	
