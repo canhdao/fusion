@@ -679,8 +679,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1390,8 +1390,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3368,8 +3368,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5971,6 +5971,7 @@ MonoBehaviour:
   grpAreaIsFull: {fileID: 1471651571}
   grpPerfect: {fileID: 1522763320}
   txtBrain: {fileID: 361577667}
+  txtTotalProductionRate: {fileID: 1840031963}
   source: {fileID: 519420033}
   sndButton: {fileID: 8300000, guid: e3ce4462159b8954e8447996c3913ce9, type: 3}
   sndBuyZombie: {fileID: 8300000, guid: 1b8d0fe58a3cafc448934985493412a3, type: 3}
@@ -8475,8 +8476,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8795,8 +8796,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10088,8 +10089,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12075,8 +12076,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13671,8 +13672,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14031,8 +14032,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14763,6 +14764,22 @@ MonoBehaviour:
   - {fileID: 1998508893}
   - {fileID: 1016360829}
   - {fileID: 1364623579}
+  zombieUpgradeButtons:
+  - {fileID: 1492168128}
+  - {fileID: 1926412757}
+  - {fileID: 94027696}
+  - {fileID: 1300354366}
+  - {fileID: 1162885746}
+  - {fileID: 1136009259}
+  - {fileID: 837772746}
+  - {fileID: 986658219}
+  - {fileID: 2136232931}
+  - {fileID: 32203393}
+  - {fileID: 738674417}
+  - {fileID: 1279764481}
+  - {fileID: 1371620181}
+  - {fileID: 692092772}
+  - {fileID: 253490623}
   content: {fileID: 1377066687}
 --- !u!114 &1197424310
 MonoBehaviour:
@@ -16343,8 +16360,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16624,8 +16641,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17695,8 +17712,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19166,8 +19183,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23509,7 +23526,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: PRODUCE 0.5/s
+  m_Text: 2 brains/s
 --- !u!222 &1840031964
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -24564,8 +24581,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -25283,6 +25300,22 @@ MonoBehaviour:
   - {fileID: 300353001}
   - {fileID: 1212033856}
   - {fileID: 179228287}
+  zombieBuyButtons:
+  - {fileID: 1684516831}
+  - {fileID: 1884292283}
+  - {fileID: 1986413778}
+  - {fileID: 1506531076}
+  - {fileID: 303093370}
+  - {fileID: 931542733}
+  - {fileID: 663818867}
+  - {fileID: 634244013}
+  - {fileID: 2057037080}
+  - {fileID: 1929142129}
+  - {fileID: 239174626}
+  - {fileID: 130746456}
+  - {fileID: 225485807}
+  - {fileID: 1181172957}
+  - {fileID: 1219258082}
   content: {fileID: 1440140925}
 --- !u!1 &2001655313
 GameObject:
@@ -26711,8 +26744,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 519420030}
-        m_MethodName: UpgradeZombie
+      - m_Target: {fileID: 1197424309}
+        m_MethodName: OnUpgradeZombie
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

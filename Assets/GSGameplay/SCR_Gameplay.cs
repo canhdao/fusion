@@ -57,6 +57,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject grpPerfect;
 	
 	public Text txtBrain;
+	public Text txtTotalProductionRate;
 	
 	public AudioSource	source;
 	
@@ -119,7 +120,7 @@ public class SCR_Gameplay : MonoBehaviour {
 			SCR_Profile.Reset();
 		}
 		
-		txtBrain.text = SCR_Profile.brain.ToString();
+		txtBrain.text = FormatNumber(SCR_Profile.brain);
 		
 		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
 			SpawnZombie(i, SCR_Profile.numberZombies[i]);
@@ -155,10 +156,16 @@ public class SCR_Gameplay : MonoBehaviour {
 		cvsDiscover.SetActive(false);
 		
 		scrZombieShop = cvsGameplay.transform.Find("ZombieShop").GetComponent<SCR_ZombieShop>();
-		scrZombieShop.Refresh();
-		
 		scrUpgradeShop = cvsUpgrade.transform.Find("UpgradeShop").GetComponent<SCR_UpgradeShop>();
-		scrUpgradeShop.Refresh();
+		
+		int total = 0;
+		
+		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
+			int productionRate = SCR_Config.GetProductionRate(i);
+			total += productionRate;
+		}
+		
+		txtTotalProductionRate.text = FormatNumber(total) + " brains/s";
 	}
 	
 	// Update is called once per frame
@@ -366,8 +373,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				SCR_Profile.zombieUnlocked = zombieIndex;
 				SCR_Profile.SaveZombieUnlocked();
 				
-				scrZombieShop.Refresh();
-				scrUpgradeShop.Refresh();
+				scrZombieShop.RefreshUnlocked();
+				scrUpgradeShop.RefreshUnlocked();
 			}
 			
 			source.PlayOneShot(sndEvolve);
@@ -380,14 +387,18 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	public void IncreaseBrain(int amount) {
 		SCR_Profile.brain += amount;
-		txtBrain.text = SCR_Profile.brain.ToString();
+		txtBrain.text = FormatNumber(SCR_Profile.brain);
 		SCR_Profile.SaveBrain();
+		scrZombieShop.UpdateBrain();
+		scrUpgradeShop.UpdateBrain();
 	}
 
 	public void DecreaseBrain(int amount) {
 		SCR_Profile.brain -= amount;
-		txtBrain.text = SCR_Profile.brain.ToString();
+		txtBrain.text = FormatNumber(SCR_Profile.brain);
 		SCR_Profile.SaveBrain();
+		scrZombieShop.UpdateBrain();
+		scrUpgradeShop.UpdateBrain();
 	}
 
 	public void SwitchMap(int map) {
@@ -535,9 +546,6 @@ public class SCR_Gameplay : MonoBehaviour {
 		}
 	}
 	
-	public void UpgradeZombie(int index) {
-	}
-	
 	public static int GetMapFromZombieIndex(int zombieIndex) {
 		int map = 0;
 		
@@ -624,5 +632,31 @@ public class SCR_Gameplay : MonoBehaviour {
 		float x = (bottomLeft.x + bottomRight.x - Screen.width) * 0.5f * SCREEN_WIDTH * 100 / Screen.width + HAND_BUTTON_OFFSET_X;
 		float y = (bottomLeft.y + topLeft.y - Screen.height) * 0.5f * SCREEN_HEIGHT * 100 / Screen.height + HAND_BUTTON_OFFSET_Y;
 		return new Vector2(x, y);
+	}
+	
+	public static string FormatNumber(int n)
+	{
+		if (n < 1000)
+			return n.ToString();
+
+		if (n < 10000)
+			return string.Format("{0:#,.##}K", n - 5);
+
+		if (n < 100000)
+			return string.Format("{0:#,.#}K", n - 50);
+
+		if (n < 1000000)
+			return string.Format("{0:#,.}K", n - 500);
+
+		if (n < 10000000)
+			return string.Format("{0:#,,.##}M", n - 5000);
+
+		if (n < 100000000)
+			return string.Format("{0:#,,.#}M", n - 50000);
+
+		if (n < 1000000000)
+			return string.Format("{0:#,,.}M", n - 500000);
+
+		return string.Format("{0:#,,,.##}B", n - 5000000);
 	}
 }
