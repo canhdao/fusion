@@ -22,6 +22,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	public const float HAND_BUTTON_OFFSET_X = 70.0f;
 	public const float HAND_BUTTON_OFFSET_Y = -100.0f;
 	
+	public const float BANNER_GAMEPLAY_Y = 0.1f;
+	
 	public static float SCREEN_WIDTH;
 	public static float SCREEN_HEIGHT;
 
@@ -46,6 +48,7 @@ public class SCR_Gameplay : MonoBehaviour {
 	public GameObject cvsGameplay;
 	public GameObject cvsUpgrade;
 	public GameObject cvsCollection;
+	public GameObject cvsCoin;
 	public GameObject cvsDiscover;
 	public GameObject garden;
 	public GameObject[] backgrounds;
@@ -158,6 +161,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		cvsGameplay.SetActive(true);
 		cvsUpgrade.SetActive(false);
 		cvsCollection.SetActive(false);
+		cvsCoin.SetActive(true);
 		cvsDiscover.SetActive(false);
 		
 		scrZombieShop = cvsGameplay.transform.Find("ZombieShop").GetComponent<SCR_ZombieShop>();
@@ -176,6 +180,8 @@ public class SCR_Gameplay : MonoBehaviour {
 		MobileAds.Initialize(appId);
 		
 		RequestBanner();
+		
+		SetBannerTop();
 	}
 	
 	private void RequestBanner() {
@@ -195,6 +201,15 @@ public class SCR_Gameplay : MonoBehaviour {
 		
         bannerView.LoadAd(request);
     }
+	
+	private void SetBannerTop() {
+		if (Screen.dpi != 0) {
+			bannerView.SetPosition(0, Mathf.RoundToInt(Screen.height * BANNER_GAMEPLAY_Y / (Screen.dpi / 160)));
+		}
+		else {
+			bannerView.SetPosition(AdPosition.Top);
+		}
+	}
 	
 	public void Update() {
 		if (!cvsDiscover.activeSelf
@@ -520,6 +535,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				}
 			}
 		}
+		
+		bannerView.SetPosition(AdPosition.Bottom);
 	}
 
 	public void CloseZombieShop() {
@@ -533,6 +550,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				}
 			}
 		}
+		
+		SetBannerTop();
 	}
 
 	public void OpenUpgrade() {
@@ -540,11 +559,15 @@ public class SCR_Gameplay : MonoBehaviour {
 			cvsGameplay.SetActive(false);
 			cvsUpgrade.SetActive(true);
 		}
+		
+		bannerView.SetPosition(AdPosition.Bottom);
 	}
 
 	public void CloseUpgrade() {
 		cvsUpgrade.SetActive(false);
 		cvsGameplay.SetActive(true);
+		
+		SetBannerTop();
 	}
 
 	public void OpenCollection() {
@@ -552,11 +575,19 @@ public class SCR_Gameplay : MonoBehaviour {
 			cvsGameplay.SetActive(false);
 			cvsCollection.SetActive(true);
 		}
+		
+		cvsCoin.SetActive(false);
+		
+		bannerView.SetPosition(AdPosition.Bottom);
 	}
 
 	public void CloseCollection() {
 		cvsCollection.SetActive(false);
 		cvsGameplay.SetActive(true);
+		
+		cvsCoin.SetActive(true);
+		
+		SetBannerTop();
 	}
 
 	public void BuyZombie(int index) {
