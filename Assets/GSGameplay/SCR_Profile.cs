@@ -26,6 +26,10 @@ public class SCR_Profile {
 		zombieUnlocked = PlayerPrefs.GetInt("zombieUnlocked", 0);
 		
 		finishedTutorial = PlayerPrefs.GetInt("finishedTutorial", 0) == 1;
+		
+		if (!finishedTutorial && brain < SCR_Config.ZOMBIE_INFO[0].price) {
+			brain = SCR_Config.ZOMBIE_INFO[0].price;
+		}
 	}
 	
 	public static void Save() {
