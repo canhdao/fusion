@@ -233,6 +233,8 @@ public class SCR_Gameplay : MonoBehaviour {
 							SCR_Profile.numberTombs--;
 							SCR_Profile.SaveNumberTombs();
 							
+							UpdateTotalProductionRate();
+							
 							zombie.transform.position = bestHit.transform.parent.position;
 							Destroy(bestHit.transform.parent.gameObject);
 
@@ -320,7 +322,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		totalProductionRate = 0;
 		
 		for (int i = 0; i < SCR_Profile.NUMBER_ZOMBIES; i++) {
-			int productionRate = SCR_Config.GetProductionRate(i);
+			int productionRate = SCR_Config.GetProductionRate(i) * SCR_Profile.numberZombies[i];
 			totalProductionRate += productionRate;
 		}
 		
@@ -412,6 +414,8 @@ public class SCR_Gameplay : MonoBehaviour {
 			SCR_Profile.numberZombies[zombieIndex]++;
 			SCR_Profile.numberZombies[originalIndex] -= 2;
 			SCR_Profile.SaveNumberZombies();
+			
+			UpdateTotalProductionRate();
 			
 			if (showingTutorial) {
 				if (tutorialPhase == TutorialPhase.EVOLVE_ZOMBIE) {
@@ -526,6 +530,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		if (!showingTutorial || tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
 			if (!cvsDiscover.activeSelf) {
 				zombieShop.SetActive(true);
+				bannerView.SetPosition(AdPosition.Bottom);
 				
 				if (showingTutorial) {
 					if (tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
@@ -535,13 +540,12 @@ public class SCR_Gameplay : MonoBehaviour {
 				}
 			}
 		}
-		
-		bannerView.SetPosition(AdPosition.Bottom);
 	}
 
 	public void CloseZombieShop() {
 		if (!showingTutorial || tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
 			zombieShop.SetActive(false);
+			SetBannerTop();
 			
 			if (showingTutorial) {
 				if (tutorialPhase == TutorialPhase.CLOSE_ZOMBIE_SHOP) {
@@ -550,17 +554,15 @@ public class SCR_Gameplay : MonoBehaviour {
 				}
 			}
 		}
-		
-		SetBannerTop();
 	}
 
 	public void OpenUpgrade() {
 		if (!showingTutorial && !cvsDiscover.activeSelf) {
 			cvsGameplay.SetActive(false);
 			cvsUpgrade.SetActive(true);
+			
+			bannerView.SetPosition(AdPosition.Bottom);
 		}
-		
-		bannerView.SetPosition(AdPosition.Bottom);
 	}
 
 	public void CloseUpgrade() {
@@ -574,11 +576,10 @@ public class SCR_Gameplay : MonoBehaviour {
 		if (!showingTutorial && !cvsDiscover.activeSelf) {
 			cvsGameplay.SetActive(false);
 			cvsCollection.SetActive(true);
+			
+			cvsCoin.SetActive(false);
+			bannerView.SetPosition(AdPosition.Bottom);
 		}
-		
-		cvsCoin.SetActive(false);
-		
-		bannerView.SetPosition(AdPosition.Bottom);
 	}
 
 	public void CloseCollection() {
@@ -586,7 +587,6 @@ public class SCR_Gameplay : MonoBehaviour {
 		cvsGameplay.SetActive(true);
 		
 		cvsCoin.SetActive(true);
-		
 		SetBannerTop();
 	}
 
@@ -598,6 +598,8 @@ public class SCR_Gameplay : MonoBehaviour {
 				GameObject zombie = SpawnZombie(index);
 				SCR_Profile.numberZombies[index]++;
 				SCR_Profile.SaveNumberZombies();
+				
+				UpdateTotalProductionRate();
 
 				DecreaseBrain(SCR_Config.ZOMBIE_INFO[index].price);
 				

@@ -43,6 +43,8 @@ public class SCR_UpgradeShop : MonoBehaviour {
 	
 	public void OnUpgradeZombie(int index) {
 		if (SCR_Config.GetUpgradePrice(index) <= SCR_Profile.brain) {
+			SCR_Gameplay.instance.DecreaseBrain(SCR_Config.GetUpgradePrice(index));
+			
 			SCR_Profile.upgradeZombies[index]++;
 			SCR_Profile.SaveUpgradeZombies();
 			
