@@ -14,7 +14,7 @@ public class SCR_Profile {
 	public static bool finishedTutorial = false;
 	
 	public static void Load() {
-		brain = PlayerPrefs.GetInt("brain", 0);
+		brain = PlayerPrefs.GetInt("brain", SCR_Config.ZOMBIE_INFO[0].price);
 		
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			numberZombies[i] = PlayerPrefs.GetInt("zombie" + i.ToString(), 0);
@@ -38,7 +38,7 @@ public class SCR_Profile {
 	}
 	
 	public static void Reset() {
-		brain = 0;
+		brain = SCR_Config.ZOMBIE_INFO[0].price;
 		
 		for (int i = 0; i < NUMBER_ZOMBIES; i++) {
 			numberZombies[i] = 0;

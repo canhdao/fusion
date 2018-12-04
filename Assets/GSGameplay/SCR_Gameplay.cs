@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using GoogleMobileAds.Api;
 
 public enum TutorialPhase {
 	OPEN_TOMB,
@@ -96,12 +97,13 @@ public class SCR_Gameplay : MonoBehaviour {
 	private int totalProductionRate = 0;
 	private float productionTime = 0;
 	
-	void Awake() {
+	private BannerView bannerView;
+	
+	public void Awake() {
 		instance = this;
 	}
 	
-	// Use this for initialization
-	void Start() {
+	public void Start() {
 		//SCR_Profile.Reset();
 		SCREEN_HEIGHT = Camera.main.orthographicSize * 2;
 		SCREEN_WIDTH = SCREEN_HEIGHT * Screen.width / Screen.height;
@@ -162,10 +164,39 @@ public class SCR_Gameplay : MonoBehaviour {
 		scrUpgradeShop = cvsUpgrade.transform.Find("UpgradeShop").GetComponent<SCR_UpgradeShop>();
 		
 		UpdateTotalProductionRate();
+		
+		#if UNITY_ANDROID
+			string appId = "ca-app-pub-0081066185741622~5075136082";
+		#elif UNITY_IPHONE
+			string appId = "ca-app-pub-0081066185741622~6955193968";
+		#else
+			string appId = "unexpected_platform";
+		#endif
+
+		MobileAds.Initialize(appId);
+		
+		RequestBanner();
 	}
 	
-	// Update is called once per frame
-	void Update() {
+	private void RequestBanner() {
+        #if UNITY_ANDROID
+            string adUnitId = "ca-app-pub-0081066185741622/3194669084";
+        #elif UNITY_IPHONE
+            string adUnitId = "ca-app-pub-0081066185741622/6572050581";
+        #else
+            string adUnitId = "unexpected_platform";
+        #endif
+
+        bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
+		
+		AdRequest request = new AdRequest.Builder()
+		.AddTestDevice("70A04A3097E1E7BAAF564A4F70E42D77")
+		.Build();
+		
+        bannerView.LoadAd(request);
+    }
+	
+	public void Update() {
 		if (!cvsDiscover.activeSelf
 		&&  !cvsUpgrade.activeSelf
 		&&  !cvsCollection.activeSelf
