@@ -17,9 +17,14 @@ public class SCR_UpgradeShop : MonoBehaviour {
 		UpdateBrain();
 	}
 	
+	public void OnEnable() {
+		GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+	}
+	
 	public void RefreshUnlocked() {
 		for (int i = 0; i <= SCR_Profile.zombieUnlocked; i++) {
 			content.GetChild(i).gameObject.SetActive(true);
+			content.GetChild(i).GetComponent<RectTransform>().anchoredPosition = new Vector2(0, SCR_ZombieShop.FIRST_BUTTON_Y - SCR_ZombieShop.BUTTON_DISTANCE * (SCR_Profile.zombieUnlocked - i));
 		}
 		
 		for (int i = SCR_Profile.zombieUnlocked + 1; i < content.childCount; i++) {

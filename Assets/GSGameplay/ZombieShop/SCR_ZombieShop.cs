@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SCR_ZombieShop : MonoBehaviour {
+	public const float FIRST_BUTTON_Y = -350;
+	public const float BUTTON_DISTANCE = 250;
+	
 	public Text[] zombieNames;
 	public Text[] zombieProductionRates;
 	public Text[] zombiePrices;
@@ -24,9 +27,14 @@ public class SCR_ZombieShop : MonoBehaviour {
 		UpdateBrain();
 	}
 	
+	public void OnEnable() {
+		GetComponent<ScrollRect>().verticalNormalizedPosition = 1;
+	}
+	
 	public void RefreshUnlocked() {
 		for (int i = 0; i <= SCR_Profile.zombieUnlocked; i++) {
 			content.GetChild(i).gameObject.SetActive(true);
+			content.GetChild(i).GetComponent<RectTransform>().anchoredPosition = new Vector2(0, FIRST_BUTTON_Y - BUTTON_DISTANCE * (SCR_Profile.zombieUnlocked - i));
 		}
 		
 		for (int i = SCR_Profile.zombieUnlocked + 1; i < content.childCount; i++) {
