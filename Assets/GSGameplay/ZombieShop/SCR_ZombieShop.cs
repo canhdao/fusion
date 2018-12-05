@@ -20,7 +20,7 @@ public class SCR_ZombieShop : MonoBehaviour {
 			
 			zombieNames[i].text = SCR_Config.ZOMBIE_INFO[i].name.ToUpper();
 			zombieProductionRates[i].text = productionRate;
-			zombiePrices[i].text = SCR_Config.ZOMBIE_INFO[i].price.ToString();
+			zombiePrices[i].text = SCR_Gameplay.FormatNumber(SCR_Config.ZOMBIE_INFO[i].price);
 		}
 		
 		RefreshUnlocked();
