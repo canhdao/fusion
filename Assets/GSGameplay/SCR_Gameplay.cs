@@ -13,6 +13,17 @@ public enum TutorialPhase {
 }
 
 public class SCR_Gameplay : MonoBehaviour {
+#if UNITY_ANDROID
+	const string appId = "ca-app-pub-0081066185741622~5075136082";
+	const string adUnitId = "ca-app-pub-0081066185741622/3194669084";
+#elif UNITY_IPHONE
+	const string appId = "ca-app-pub-0081066185741622~6955193968";
+	const string adUnitId = "ca-app-pub-0081066185741622/6572050581";
+#else
+	const string appId = "unexpected_platform";
+	const string adUnitId = "unexpected_platform";
+#endif
+	
 	public const float HAND_TOMB_OFFSET_X = 50.0f;
 	public const float HAND_TOMB_OFFSET_Y = -40;
 	
@@ -102,6 +113,8 @@ public class SCR_Gameplay : MonoBehaviour {
 	
 	private BannerView bannerView;
 	
+	private bool started = false;
+	
 	public void Awake() {
 		instance = this;
 	}
@@ -169,30 +182,20 @@ public class SCR_Gameplay : MonoBehaviour {
 		
 		UpdateTotalProductionRate();
 		
-		#if UNITY_ANDROID
-			string appId = "ca-app-pub-0081066185741622~5075136082";
-		#elif UNITY_IPHONE
-			string appId = "ca-app-pub-0081066185741622~6955193968";
-		#else
-			string appId = "unexpected_platform";
-		#endif
-
 		MobileAds.Initialize(appId);
 		
 		RequestBanner();
-		
 		SetBannerTop();
+		
+		started = true;
 	}
 	
 	private void RequestBanner() {
-        #if UNITY_ANDROID
-            string adUnitId = "ca-app-pub-0081066185741622/3194669084";
-        #elif UNITY_IPHONE
-            string adUnitId = "ca-app-pub-0081066185741622/6572050581";
-        #else
-            string adUnitId = "unexpected_platform";
-        #endif
-
+		if (bannerView != null) {
+			bannerView.Destroy();
+			bannerView = null;
+		}
+		
         bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
 		
 		AdRequest request = new AdRequest.Builder()
@@ -210,6 +213,20 @@ public class SCR_Gameplay : MonoBehaviour {
 			bannerView.SetPosition(AdPosition.Top);
 		}
 	}
+	
+	public void OnApplicationFocus(bool hasFocus)
+    {
+        if (hasFocus && started) {
+			RequestBanner();
+			
+			if (zombieShop.activeSelf || cvsUpgrade.activeSelf || cvsCollection.activeSelf) {
+				bannerView.SetPosition(AdPosition.Bottom);
+			}
+			else {
+				SetBannerTop();
+			}
+		}
+    }
 	
 	public void Update() {
 		if (!cvsDiscover.activeSelf
@@ -530,6 +547,7 @@ public class SCR_Gameplay : MonoBehaviour {
 		if (!showingTutorial || tutorialPhase == TutorialPhase.OPEN_ZOMBIE_SHOP) {
 			if (!cvsDiscover.activeSelf) {
 				zombieShop.SetActive(true);
+				
 				bannerView.SetPosition(AdPosition.Bottom);
 				
 				if (showingTutorial) {
@@ -578,6 +596,7 @@ public class SCR_Gameplay : MonoBehaviour {
 			cvsCollection.SetActive(true);
 			
 			cvsCoin.SetActive(false);
+			
 			bannerView.SetPosition(AdPosition.Bottom);
 		}
 	}
