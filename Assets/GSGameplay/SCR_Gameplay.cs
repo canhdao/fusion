@@ -199,7 +199,8 @@ public class SCR_Gameplay : MonoBehaviour {
         bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
 		
 		AdRequest request = new AdRequest.Builder()
-		.AddTestDevice("70A04A3097E1E7BAAF564A4F70E42D77")
+		.AddTestDevice("70A04A3097E1E7BAAF564A4F70E42D77")	// Minh's phone
+		.AddTestDevice("36e6813a9776d338128e27da33a0467f")	// Canh's phone
 		.Build();
 		
         bannerView.LoadAd(request);
